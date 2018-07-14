@@ -1,0 +1,26 @@
+{
+  "name": "@sabaki/gametree",
+  "version": "0.1.0",
+  "description": "An immutable SGF game tree data type.",
+  "main": "./src/main.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SabakiHQ/gametree.git"
+  },
+  "keywords": [
+    "sgf",
+    "game",
+    "tree",
+    "datatype",
+    "immutable"
+  ],
+  "author": "Yichuan Shen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SabakiHQ/gametree/issues"
+  },
+  "homepage": "https://github.com/SabakiHQ/gametree#readme"
+}
