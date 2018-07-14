@@ -4,7 +4,7 @@
   "description": "An immutable SGF game tree data type.",
   "main": "./src/main.js",
   "scripts": {
-    "test": "npm test"
+    "test": "tap tests/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/SabakiHQ/gametree/issues"
   },
-  "homepage": "https://github.com/SabakiHQ/gametree#readme"
+  "homepage": "https://github.com/SabakiHQ/gametree#readme",
+  "devDependencies": {
+    "tap": "^12.0.1"
+  }
 }
