@@ -82,13 +82,13 @@ class GameTree {
         } else if (index === tree.nodes.length - 1) {
             // Append new tree with nodes
 
-            let newTree = { id: ++this.maxId, nodes, children: [] }
+            let newTree = {id: ++this.maxId, nodes, children: []}
             let result = this.updateTree(id, {
                 children: [...tree.children, newTree]
             })
 
-            result.currents = Object.assign({}, this.currents, { [id]: tree.children.length })
-            result.parents = Object.assign({}, this.parents, { [newTree.id]: id })
+            result.currents = Object.assign({}, this.currents, {[id]: tree.children.length})
+            result.parents = Object.assign({}, this.parents, {[newTree.id]: id})
 
             return result
         }
@@ -112,11 +112,11 @@ class GameTree {
 
         let result = this.updateTree(id, top)
 
-        result.currents = Object.assign({}, this.currents, { [id]: 1 })
+        result.currents = Object.assign({}, this.currents, {[id]: 1})
         result.parents = Object.assign(
             {}, this.parents,
-            ...top.children.map(child => ({ [child.id]: id })),
-            ...bottom.children.map(child => ({ [child.id]: bottom.id }))
+            ...top.children.map(child => ({[child.id]: id})),
+            ...bottom.children.map(child => ({[child.id]: bottom.id}))
         )
 
         return result
@@ -168,12 +168,12 @@ class GameTree {
 
         result.parents = Object.assign(
             {}, this.parents,
-            child.children.map(child => ({ [child.id]: parent.id }))
+            child.children.map(child => ({[child.id]: parent.id}))
         )
 
         result.currents = Object.assign(
             {}, this.currents,
-            { [parent.id]: this.currents[child.id] }
+            {[parent.id]: this.currents[child.id]}
         )
 
         delete result.currents[id]
