@@ -181,35 +181,11 @@ class GameTree {
         return result
     }
 
-    toObject() {
-        return this.root
-    }
-
     clone() {
         return Object.assign(new GameTree(), this, {
             idCache: {}
         })
     }
-}
-
-GameTree.fromObject = function(obj) {
-    let result = new GameTree()
-
-    function traverse(tree) {
-        result.maxId = Math.max(result.maxId, tree.id)
-        result.idCache[tree.id] = tree
-
-        for (let child of tree.children) {
-            traverse(child)
-            result.parents[child.id] = tree.id
-        }
-
-        return tree
-    }
-
-    result.root = traverse(obj)
-
-    return result
 }
 
 module.exports = GameTree
