@@ -184,6 +184,29 @@ class GameTree {
         return result
     }
 
+    navigate(id, index, step) {
+        let tree = this.findTree(id)
+        if (tree == null) return null
+
+        if (0 <= index + step && index + step < tree.nodes.length) {
+            return [id, index + step]
+        } else if (index + step < 0) {
+            let parent = this.findTree(this.parents[id])
+            if (parent == null) return null
+
+            let newStep = index + step + 1
+            return this.navigate(parent.id, parent.nodes.length - 1, newStep)
+        } else if (index + step >= tree.nodes.length) {
+            let nextId = tree.children[this.currents[id] || 0]
+            if (nextId == null) return null
+
+            let newStep = index + step - tree.nodes.length
+            return this.navigate(nextId, 0, newStep)
+        }
+
+        return null
+    }
+
     clone() {
         return Object.assign(new GameTree(), this, {
             idCache: {}
