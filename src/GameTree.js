@@ -69,7 +69,7 @@ class GameTree {
         })
     }
 
-    pushNodes(id, index, ...nodes) {
+    insertNodes(id, index, ...nodes) {
         let tree = this.findTree(id)
         if (tree == null || index < 0 || index >= tree.nodes.length) return this
 
