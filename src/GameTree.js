@@ -67,12 +67,12 @@ class GameTree {
         })
     }
 
-    pushNode(id, node) {
+    pushNodes(id, ...nodes) {
         let tree = this.findTree(id)
         if (tree == null) return this
 
         return this.updateTree(id, {
-            nodes: [...tree.nodes, node]
+            nodes: [...tree.nodes, ...nodes]
         })
     }
 
