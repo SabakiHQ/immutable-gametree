@@ -145,7 +145,7 @@ class GameTree {
                 children: parent.children.filter(child => child.id !== id)
             })
 
-            if ((result.currents[parent.id] || 0) === parent.children.indexOf(tree)) {
+            if ((result.currents[parent.id] || 0) >= parent.children.indexOf(tree)) {
                 result.currents = Object.assign({}, this.currents)
 
                 if (parent.children.length > 1) {
@@ -205,6 +205,23 @@ class GameTree {
         }
 
         return null
+    }
+
+    getHeight() {
+        let inner = tree => {
+            return tree.nodes.length + Math.max(...tree.children.map(inner))
+        }
+
+        return inner(this.root)
+    }
+
+    getCurrentHeight() {
+        let inner = tree => {
+            if (tree == null) return 0
+            return tree.nodes.length + inner(tree.children[this.currents[tree.id] || 0])
+        }
+
+        return inner(this.root)
     }
 
     clone() {
