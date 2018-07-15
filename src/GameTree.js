@@ -1,8 +1,8 @@
 class GameTree {
-    constructor() {
+    constructor(rootNode = {}) {
         this.root = {
             id: 0,
-            nodes: [],
+            nodes: [rootNode],
             children: []
         }
 
@@ -67,61 +67,54 @@ class GameTree {
         })
     }
 
-    pushNodes(id, ...nodes) {
-        let tree = this.findTree(id)
-        if (tree == null) return this
-
-        return this.updateTree(id, {
-            nodes: [...tree.nodes, ...nodes]
-        })
-    }
-
-    pushTree(id, index, data) {
+    pushNodes(id, index, ...nodes) {
         let tree = this.findTree(id)
         if (tree == null || index < 0 || index >= tree.nodes.length) return this
 
-        let result = null
-        let newTree = Object.assign(
-            {nodes: [], children: []},
-            data,
-            {id: ++this.maxId}
-        )
+        if (index === tree.nodes.length - 1 && tree.children.length === 0) {
+            // Append nodes to existing tree
 
-        if (index < tree.nodes.length - 1) {
-            // Add variation in the middle of a tree
+            return this.updateTree(id, {
+                nodes: [...tree.nodes, ...nodes]
+            })
+        } else if (index === tree.nodes.length - 1) {
+            // Append new tree with nodes
+
+            let newTree = {id: ++this.maxId, nodes, children: []}
+            let result = this.updateTree(id, {
+                children: [...tree.children, newTree]
+            })
+
+            result.parents = Object.assign({}, this.parents, {[newTree.id]: id})
+            return result
+        } else {
+            // Insert new tree in the middle of a tree
 
             let bottom = {
-                id: newTree.id,
+                id: ++this.maxId,
                 nodes: tree.nodes.slice(index + 1),
                 children: tree.children
+            }
+            let newTree = {
+                id: ++this.maxId,
+                nodes,
+                children: []
             }
             let top = {
                 nodes: tree.nodes.slice(0, index + 1),
                 children: [bottom, newTree]
             }
-            newTree.id = ++this.maxId
 
-            result = this.updateTree(id, top)
-            result.currents = Object.assign(
-                {}, this.currents,
-                {[id]: 1}
-            )
+            let result = this.updateTree(id, top)
+
             result.parents = Object.assign(
                 {}, this.parents,
                 ...top.children.map(child => ({[child.id]: id})),
                 ...bottom.children.map(child => ({[child.id]: bottom.id}))
             )
-        } else {
-            // Add tree to children
 
-            result = this.updateTree(id, {
-                children: [...tree.children, newTree]
-            })
-            result.currents = Object.assign({}, this.currents, {[id]: tree.children.length})
-            result.parents = Object.assign({}, this.parents, {[newTree.id]: id})
+            return result
         }
-
-        return result
     }
 
     toObject() {
