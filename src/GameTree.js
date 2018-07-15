@@ -89,34 +89,34 @@ class GameTree {
 
             result.parents = Object.assign({}, this.parents, {[newTree.id]: id})
             return result
-        } else {
-            // Insert new tree in the middle of a tree
-
-            let bottom = {
-                id: ++this.maxId,
-                nodes: tree.nodes.slice(index + 1),
-                children: tree.children
-            }
-            let newTree = {
-                id: ++this.maxId,
-                nodes,
-                children: []
-            }
-            let top = {
-                nodes: tree.nodes.slice(0, index + 1),
-                children: [bottom, newTree]
-            }
-
-            let result = this.updateTree(id, top)
-
-            result.parents = Object.assign(
-                {}, this.parents,
-                ...top.children.map(child => ({[child.id]: id})),
-                ...bottom.children.map(child => ({[child.id]: bottom.id}))
-            )
-
-            return result
         }
+
+        // Insert new tree in the middle of a tree
+
+        let bottom = {
+            id: ++this.maxId,
+            nodes: tree.nodes.slice(index + 1),
+            children: tree.children
+        }
+        let newTree = {
+            id: ++this.maxId,
+            nodes,
+            children: []
+        }
+        let top = {
+            nodes: tree.nodes.slice(0, index + 1),
+            children: [bottom, newTree]
+        }
+
+        let result = this.updateTree(id, top)
+
+        result.parents = Object.assign(
+            {}, this.parents,
+            ...top.children.map(child => ({[child.id]: id})),
+            ...bottom.children.map(child => ({[child.id]: bottom.id}))
+        )
+
+        return result
     }
 
     removeNode(id, index) {
@@ -130,14 +130,16 @@ class GameTree {
                 nodes: tree.nodes.slice(0, index),
                 children: []
             })
-        } else {
-            // Remove tree
+        }
 
-            let parent = this.findTree(this.parents[id])
-            if (parent == null) throw new Error('Root node cannot be removed.')
+        // Remove tree
 
+        let parent = this.findTree(this.parents[id])
+        if (parent == null) throw new Error('Root node cannot be removed.')
+
+        if (parent.children.length >= 3 || parent.children.length === 1) {
             let result = this.updateTree(parent.id, {
-                children: parent.children.filter(x => x.id !== id)
+                children: parent.children.filter(child => child.id !== id)
             })
 
             if ((result.currents[parent.id] || 0) === parent.children.indexOf(tree)) {
@@ -152,6 +154,31 @@ class GameTree {
 
             return result
         }
+
+        // Normalize tree structure
+
+        let child = parent.children.find(child => child.id !== id)
+        let result = this.updateTree(parent.id, {
+            nodes: [...parent.nodes, ...child.nodes],
+            children: child.children
+        })
+
+        result.parents = Object.assign(
+            {}, this.parents,
+            child.children.map(child => ({[child.id]: parent.id}))
+        )
+
+        result.currents = Object.assign(
+            {}, this.currents,
+            {[parent.id]: this.currents[child.id]}
+        )
+
+        delete result.currents[id]
+        delete result.currents[child.id]
+        delete result.parents[id]
+        delete result.parents[child.id]
+
+        return result
     }
 
     toObject() {
