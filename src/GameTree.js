@@ -14,6 +14,8 @@ class GameTree {
     }
 
     findTree(id) {
+        if (id == null) return null
+
         let cached = this.idCache[id]
         if (cached != null) return cached
 
@@ -112,6 +114,41 @@ class GameTree {
                 ...top.children.map(child => ({[child.id]: id})),
                 ...bottom.children.map(child => ({[child.id]: bottom.id}))
             )
+
+            return result
+        }
+    }
+
+    removeNode(id, index) {
+        let tree = this.findTree(id)
+        if (tree == null || index < 0 || index >= tree.nodes.length) return this
+
+        if (index !== 0) {
+            // Snip off all nodes which come after
+
+            return this.updateTree(id, {
+                nodes: tree.nodes.slice(0, index),
+                children: []
+            })
+        } else {
+            // Remove tree
+
+            let parent = this.findTree(this.parents[id])
+            if (parent == null) throw new Error('Root node cannot be removed.')
+
+            let result = this.updateTree(parent.id, {
+                children: parent.children.filter(x => x.id !== id)
+            })
+
+            if ((result.currents[parent.id] || 0) === parent.children.indexOf(tree)) {
+                result.currents = Object.assign({}, this.currents)
+
+                if (parent.children.length > 1) {
+                    result.currents[parent.id] = Math.max(this.currents[parent.id] - 1, 0)
+                } else {
+                    delete result.currents[parent.id]
+                }
+            }
 
             return result
         }
