@@ -207,6 +207,12 @@ class GameTree {
         return null
     }
 
+    getAllTrees() {
+        let inner = tree => [tree, ...[].concat(...tree.children.map(inner))]
+
+        return inner(this.root)
+    }
+
     getHeight() {
         let inner = tree => {
             return tree.nodes.length + Math.max(...tree.children.map(inner))
