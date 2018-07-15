@@ -87,7 +87,9 @@ class GameTree {
                 children: [...tree.children, newTree]
             })
 
+            result.currents = Object.assign({}, this.currents, {[id]: tree.children.length})
             result.parents = Object.assign({}, this.parents, {[newTree.id]: id})
+
             return result
         }
 
@@ -110,6 +112,7 @@ class GameTree {
 
         let result = this.updateTree(id, top)
 
+        result.currents = Object.assign({}, this.currents, {[id]: 1})
         result.parents = Object.assign(
             {}, this.parents,
             ...top.children.map(child => ({[child.id]: id})),
