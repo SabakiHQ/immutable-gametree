@@ -33,7 +33,9 @@ class GameTree {
     }
 
     updateTree(id, update) {
-        let result = this.clone()
+        let result = Object.assign(new GameTree(), this, {
+            idCache: {}
+        })
 
         let updateInner = (id, update) => {
             let parentId = this.parents[id]
@@ -248,12 +250,6 @@ class GameTree {
         return parent == null
             || parent.children[0] === tree
             && this.onMainTrack(parent.id)
-    }
-
-    clone() {
-        return Object.assign(new GameTree(), this, {
-            idCache: {}
-        })
     }
 }
 
