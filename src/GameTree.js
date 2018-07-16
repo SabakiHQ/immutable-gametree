@@ -208,8 +208,7 @@ class GameTree {
     }
 
     getAllTrees() {
-        let inner = tree => [tree, ...[].concat(...tree.children.map(inner))]
-
+        let inner = tree => [tree].concat(...tree.children.map(inner))
         return inner(this.root)
     }
 
