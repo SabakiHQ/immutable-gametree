@@ -32,6 +32,13 @@ class GameTree {
         return result
     }
 
+    findNode(id, index) {
+        let tree = this.findTree(id)
+        if (tree == null) return null
+
+        return tree.nodes[index]
+    }
+
     updateTree(id, update) {
         let result = Object.assign(new GameTree(), this, {
             idCache: {}
