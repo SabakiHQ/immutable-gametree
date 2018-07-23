@@ -1,12 +1,16 @@
 class GameTree {
-    constructor(rootNode = {}) {
+    constructor({rootNode = {}, getId = null} = {}) {
+        this.getId = getId || (() => {
+            let id = 0
+            return () => id++
+        })()
+
         this.root = {
-            id: 0,
+            id: this.getId(),
             nodes: [rootNode],
             children: []
         }
 
-        this.maxId = 0
         this.currents = {}
         this.parents = {}
 
@@ -84,7 +88,7 @@ class GameTree {
         } else if (index === tree.nodes.length - 1) {
             // Append new tree with nodes
 
-            let newTree = {id: ++this.maxId, nodes, children: []}
+            let newTree = {id: this.getId(), nodes, children: []}
             let result = this.updateTree(id, {
                 children: [...tree.children, newTree]
             })
@@ -98,16 +102,17 @@ class GameTree {
         // Insert new tree in the middle of a tree
 
         let bottom = {
-            id: ++this.maxId,
+            id: this.getId(),
             nodes: tree.nodes.slice(index + 1),
             children: tree.children
         }
         let newTree = {
-            id: ++this.maxId,
+            id: this.getId(),
             nodes,
             children: []
         }
         let top = {
+            id,
             nodes: tree.nodes.slice(0, index + 1),
             children: [bottom, newTree]
         }
@@ -199,8 +204,8 @@ class GameTree {
             let newStep = index + step + 1
             return this.navigate(parent.id, parent.nodes.length - 1, newStep)
         } else if (index + step >= tree.nodes.length) {
-            let nextId = tree.children[this.currents[id] || 0]
-            if (nextId == null) return null
+            let child = tree.children[this.currents[id] || 0]
+            if (child == null) return null
 
             let newStep = index + step - tree.nodes.length
             return this.navigate(child.id, 0, newStep)
