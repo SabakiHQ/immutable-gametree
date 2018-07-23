@@ -203,7 +203,7 @@ class GameTree {
             if (nextId == null) return null
 
             let newStep = index + step - tree.nodes.length
-            return this.navigate(nextId, 0, newStep)
+            return this.navigate(child.id, 0, newStep)
         }
 
         return null
