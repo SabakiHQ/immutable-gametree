@@ -36,6 +36,13 @@ class GameTree {
         return result
     }
 
+    findNode(id, index) {
+        let tree = this.findTree(id)
+        if (tree == null) return null
+
+        return tree.nodes[index]
+    }
+
     updateTree(id, update) {
         let result = Object.assign(new GameTree(), this, {
             idCache: {}
@@ -239,6 +246,23 @@ class GameTree {
     getLevel(id, index) {
         let parent = this.findTree(this.parents[id])
         return index + (parent ? this.getLevel(parent.id, parent.nodes.length) : 0)
+    }
+
+    getSection(level) {
+        let inner = (tree, level) => {
+            if (level < 0) return []
+            if (level < tree.nodes.length) return [[tree.id, level]]
+
+            let sections = []
+
+            for (let child of tree.children) {
+                sections.push(...inner(child, level - tree.nodes.length))
+            }
+
+            return sections
+        }
+
+        return inner(this.root, level)
     }
 
     onCurrentTrack(id) {
