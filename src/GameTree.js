@@ -78,6 +78,8 @@ class GameTree {
         return inner(ids, mutator)
     }
 
+    /* Mutators */
+
     appendNode(data) {
         return ([parent], cache) => {
             let id = this.getId()
@@ -87,6 +89,36 @@ class GameTree {
             cache[id] = node
 
             return id
+        }
+    }
+
+    removeNode() {
+        return ([node], cache) => {
+            let parent = cache[node.parentId]
+
+            let nodeIndex = parent.children.findIndex(child => child.id === node.id)
+            if (nodeIndex >= 0) parent.children.splice(nodeIndex, 1)
+
+            delete cache[node.id]
+        }
+    }
+
+    shiftNode(direction) {
+        if (!['left', 'right', 'main'].includes(direction)) return () => {}
+
+        return ([node], cache) => {
+            let parent = cache[node.parentId]
+
+            let nodeIndex = parent.children.findIndex(child => child.id === node.id)
+
+            if (nodeIndex >= 0) {
+                let newIndex = direction === 'left' ? newIndex - 1
+                    : direction === 'right' ? newIndex + 1
+                    : 0
+
+                let [node] = parent.children.splice(nodeIndex, 1)
+                parent.children.splice(newIndex, 0, node)
+            }
         }
     }
 }
