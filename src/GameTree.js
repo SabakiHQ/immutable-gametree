@@ -1,3 +1,5 @@
+const Draft = require('./Draft')
+
 class GameTree {
     constructor({getId = null, root = null} = {}) {
         this.getId = getId || (() => {
@@ -33,93 +35,42 @@ class GameTree {
         return inner(this.root)
     }
 
-    mutate(ids, mutator) {
-        let cacheCopy = {}
+    mutate(mutator) {
+        let draft = mutator(new Draft(this))
+        let tree = new GameTree({
+            getId: this.getId,
+            root: draft.root
+        })
 
-        let getCopy = id => {
-            if (cacheCopy[id] != null) return cacheCopy[id]
-
-            let node = this.get(id)
-            let nodeCopy = Object.assign({}, node, {
-                data: Object.assign({}, node.data),
-                children: [...node.children]
-            })
-
-            if (node.parentId != null) {
-                let parentCopy = getCopy(node.parentId)
-                let childIndex = parentCopy.children.indexOf(node)
-                if (childIndex >= 0) parentCopy.children[childIndex] = nodeCopy
-            }
-
-            cacheCopy[id] = nodeCopy
-            return nodeCopy
-        }
-
-        let inner = (ids, mutator) => {
-            let copies = ids.map(id => getCopy(id))
-            let result = mutator(copies, cacheCopy)
-
-            let fluent = {
-                then: f => f(result, inner),
-                done: () => {
-                    let tree = new GameTree({
-                        getId: this.getId,
-                        root: cacheCopy[this.root.id]
-                    })
-
-                    tree._cache = cacheCopy
-                    return tree
-                }
-            }
-
-            return fluent
-        }
-
-        return inner(ids, mutator)
+        tree._cache = draft.cache
+        return tree
     }
 
-    /* Mutators */
+    appendNode(parentId, data) {
+        let result = null
+        let tree = this.mutate(draft => {
+            result = draft.appendNode(parentId, data)[0]
+        })
 
-    appendNode(data) {
-        return ([parent], cache) => {
-            let id = this.getId()
-            let node = {id, data, parentId: parent.id, children: []}
-
-            parent.children.push(node)
-            cache[id] = node
-
-            return id
-        }
+        return [result, tree]
     }
 
-    removeNode() {
-        return ([node], cache) => {
-            let parent = cache[node.parentId]
+    removeNode(id) {
+        let result = null
+        let tree = this.mutate(draft => {
+            result = draft.removeNode(id)[0]
+        })
 
-            let nodeIndex = parent.children.findIndex(child => child.id === node.id)
-            if (nodeIndex >= 0) parent.children.splice(nodeIndex, 1)
-
-            delete cache[node.id]
-        }
+        return [result, tree]
     }
 
-    shiftNode(direction) {
-        if (!['left', 'right', 'main'].includes(direction)) return () => {}
+    shiftNode(id, direction) {
+        let result = null
+        let tree = this.mutate(draft => {
+            result = draft.shiftNode(id, direction)[0]
+        })
 
-        return ([node], cache) => {
-            let parent = cache[node.parentId]
-
-            let nodeIndex = parent.children.findIndex(child => child.id === node.id)
-
-            if (nodeIndex >= 0) {
-                let newIndex = direction === 'left' ? newIndex - 1
-                    : direction === 'right' ? newIndex + 1
-                    : 0
-
-                let [node] = parent.children.splice(nodeIndex, 1)
-                parent.children.splice(newIndex, 0, node)
-            }
-        }
+        return [result, tree]
     }
 }
 
