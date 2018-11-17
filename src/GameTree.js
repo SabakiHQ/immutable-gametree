@@ -36,7 +36,9 @@ class GameTree {
     }
 
     mutate(mutator) {
-        let draft = mutator(new Draft(this))
+        let draft = new Draft(this)
+        mutator(draft)
+
         let tree = new GameTree({
             getId: this.getId,
             root: draft.root

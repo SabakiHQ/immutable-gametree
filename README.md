@@ -9,10 +9,11 @@ const GameTree = require('@sabaki/immutable-gametree')
 
 let tree = new GameTree()
 
-tree.mutate([tree.root.id], ([rootNode]) => {
-    rootNode.B = ['dd']
-    return rootNode
-}).then((rootNode, mutate) => mutate([rootNode.id], ([rootNode]) => {
-    rootNode.W = ['dq']
-}))
+let newTree = tree.mutate(draft => {
+    let [id, ] = draft.appendNode(tree.root.id, {B: ['dd']})
+    draft.appendNode(id, {W: ['dq']})
+})
+
+console.log(newTree === tree)
+console.log(newTree.root)
 ~~~
