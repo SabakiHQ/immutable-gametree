@@ -1,25 +1,27 @@
 class Draft {
     constructor(base) {
-        this._base = base
-        this.getId = base.getId
+        this.base = base
         this.root = base.root
 
         this._cache = {}
-        this._removed = {}
     }
 
     get(id) {
         if (this._cache[id] != null) return this._cache[id]
-        if (id in this._removed) return null
 
-        let node = this._base.get(id)
+        let node = this.base.get(id)
+        if (node == null) {
+            this._cache[id] = null
+            return null
+        }
+
         let nodeCopy = Object.assign({}, node, {
             data: Object.assign({}, node.data),
             children: [...node.children]
         })
 
         if (node.parentId != null) {
-            let parentCopy = this.makeCopy(node.parentId)
+            let parentCopy = this.get(node.parentId)
             let childIndex = parentCopy.children.findIndex(child => child.id === id)
             if (childIndex >= 0) parentCopy.children[childIndex] = nodeCopy
         }
@@ -34,7 +36,7 @@ class Draft {
         let parent = this.get(parentId)
         if (parent == null) return null
 
-        let id = this.getId()
+        let id = this.base.getId()
         let node = {id, data, parentId, children: []}
 
         parent.children.push(node)
@@ -44,7 +46,7 @@ class Draft {
     }
 
     removeNode(id) {
-        let node = this._base.get(id)
+        let node = this.get(id)
         if (node == null) return false
 
         let parentId = node.parentId
@@ -57,9 +59,7 @@ class Draft {
         if (index >= 0) parent.children.splice(index, 1)
         else return false
 
-        delete this._cache[id]
-        this._removed[id] = true
-
+        this._cache[id] = null
         return true
     }
 
@@ -68,7 +68,7 @@ class Draft {
             throw new Error('Invalid value for direction')
         }
 
-        let node = this._base.get(id)
+        let node = this.get(id)
         if (node == null) null
 
         let {parentId} = node
@@ -93,22 +93,27 @@ class Draft {
     addToProperty(id, property, value) {
         let node = this.get(id)
 
-        if (node[property] == null) node[property] = [value]
-        else node[property] = [...node[property], value]
+        if (node.data[property] == null) {
+            node.data[property] = [value]
+        } else if (!node.data[property].includes(value)) {
+            node.data[property] = [...node.data[property], value]
+        }
     }
 
     removeFromProperty(id, property, value) {
         let node = this.get(id)
 
-        if (node[property] == null) return
-        node[property] = node[property].filter(x => x !== value)
+        if (node.data[property] == null) return
+
+        node.data[property] = node.data[property].filter(x => x !== value)
+        if (node.data[property].length === 0) delete node.data[property]
     }
 
     updateProperty(id, property, values) {
         let node = this.get(id)
 
-        if (values == null) delete node[property]
-        else node[property] = [...values]
+        if (values == null) delete node.data[property]
+        else node.data[property] = [...values]
     }
 
     removeProperty(id, property) {

@@ -26,13 +26,18 @@ class GameTree {
 
             for (let child of node.children) {
                 let result = inner(child)
-                if (result) return result
+                if (result != null) return result
             }
 
             return null
         }
 
         let node = inner(this.root)
+
+        if (node == null) {
+            this._cache[id] = null
+            return null
+        }
 
         for (let child of node.children) {
             this._cache[child.id] = child
@@ -45,12 +50,14 @@ class GameTree {
         let draft = new Draft(this)
         mutator(draft)
 
+        if (draft.root === this.root) return this
+
         let tree = new GameTree({
             getId: this.getId,
             root: draft.root
         })
 
-        tree._cache = draft.cache
+        tree._cache = draft._cache
         return tree
     }
 }
