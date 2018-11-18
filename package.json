@@ -1,5 +1,5 @@
 {
-  "name": "@sabaki/gametree",
+  "name": "@sabaki/immutable-gametree",
   "version": "0.1.0",
   "description": "An immutable SGF game tree data type.",
   "main": "./src/main.js",
@@ -13,6 +13,10 @@
   "keywords": [
     "sgf",
     "game",
+    "boardgame",
+    "go",
+    "weiqi",
+    "baduk",
     "tree",
     "datatype",
     "immutable"
