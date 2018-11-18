@@ -32,7 +32,13 @@ class GameTree {
             return null
         }
 
-        return inner(this.root)
+        let node = inner(this.root)
+
+        for (let child of node.children) {
+            this._cache[child.id] = child
+        }
+
+        return node
     }
 
     mutate(mutator) {
