@@ -47,33 +47,6 @@ class GameTree {
         tree._cache = draft.cache
         return tree
     }
-
-    appendNode(parentId, data) {
-        let result = null
-        let tree = this.mutate(draft => {
-            result = draft.appendNode(parentId, data)[0]
-        })
-
-        return [result, tree]
-    }
-
-    removeNode(id) {
-        let result = null
-        let tree = this.mutate(draft => {
-            result = draft.removeNode(id)[0]
-        })
-
-        return [result, tree]
-    }
-
-    shiftNode(id, direction) {
-        let result = null
-        let tree = this.mutate(draft => {
-            result = draft.shiftNode(id, direction)[0]
-        })
-
-        return [result, tree]
-    }
 }
 
 module.exports = GameTree

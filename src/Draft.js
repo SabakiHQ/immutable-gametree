@@ -30,14 +30,9 @@ class Draft {
         return nodeCopy
     }
 
-    mutate(mutator) {
-        mutator(this)
-        return this
-    }
-
     appendNode(parentId, data) {
         let parent = this.get(parentId)
-        if (parent == null) return [null, this]
+        if (parent == null) return null
 
         let id = this.getId()
         let node = {id, data, parentId, children: []}
@@ -45,27 +40,27 @@ class Draft {
         parent.children.push(node)
         this._cache[id] = node
 
-        return [id, this]
+        return id
     }
 
     removeNode(id) {
         let node = this._base.get(id)
-        if (node == null) return [false, this]
+        if (node == null) return false
 
         let parentId = node.parentId
         if (parentId == null) throw new Error('Cannot remove root node')
 
         let parent = this.get(parentId)
-        if (parent == null) return [false, this]
+        if (parent == null) return false
 
         let index = parent.children.findIndex(child => child.id === id)
         if (index >= 0) parent.children.splice(index, 1)
-        else return [false, this]
+        else return false
 
         delete this._cache[id]
         this._removed[id] = true
 
-        return [true, this]
+        return true
     }
 
     shiftNode(id, direction) {
@@ -74,14 +69,14 @@ class Draft {
         }
 
         let node = this._base.get(id)
-        if (node == null) return [null, this]
+        if (node == null) null
 
         let {parentId} = node
         let parent = this.get(parentId)
-        if (parent == null) return [null, this]
+        if (parent == null) null
 
         let index = parent.children.findIndex(child => child.id === id)
-        if (index < 0) return [null, this]
+        if (index < 0) null
 
         let newIndex = direction === 'left' ? Math.max(index - 1, 0)
             : direction === 'right' ? Math.min(index + 1, parent.children.length)
@@ -92,7 +87,7 @@ class Draft {
             parent.children.splice(newIndex, 0, child)
         }
 
-        return [newIndex, this]
+        return newIndex
     }
 }
 
