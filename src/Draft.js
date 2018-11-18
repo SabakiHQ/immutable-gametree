@@ -89,6 +89,31 @@ class Draft {
 
         return newIndex
     }
+
+    addToProperty(id, property, value) {
+        let node = this.get(id)
+
+        if (node[property] == null) node[property] = [value]
+        else node[property] = [...node[property], value]
+    }
+
+    removeFromProperty(id, property, value) {
+        let node = this.get(id)
+
+        if (node[property] == null) return
+        node[property] = node[property].filter(x => x !== value)
+    }
+
+    updateProperty(id, property, values) {
+        let node = this.get(id)
+
+        if (values == null) delete node[property]
+        else node[property] = [...values]
+    }
+
+    removeProperty(id, property) {
+        this.updateProperty(id, property, null)
+    }
 }
 
 module.exports = Draft
