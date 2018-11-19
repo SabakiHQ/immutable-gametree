@@ -1,13 +1,5 @@
 const t = require('tap')
-const GameTree = require('..')
-
-let id1, childId1, childId2, childId3
-let tree = new GameTree().mutate(draft => {
-    id1 = draft.appendNode(draft.root.id, {B: ['dd']})
-    childId1 = draft.appendNode(id1, {W: ['dq'], MA: ['qd', 'qq']})
-    childId2 = draft.appendNode(id1, {W: ['qd']})
-    childId3 = draft.appendNode(id1, {W: ['qq']})
-})
+const {tree, id1, childId1, childId2, childId3} = require('./data')
 
 t.test('appendNode operation', t => {
     let newTree = tree.mutate(draft => {
@@ -17,6 +9,7 @@ t.test('appendNode operation', t => {
     t.notEqual(newTree, tree)
     t.deepEqual(tree.get(childId2).children, [])
     t.equal(newTree.get(childId2).children.length, 1)
+    t.equal(newTree.get(childId2).children[0].parentId, childId2)
     t.deepEqual(newTree.get(childId2).children[0].data, {B: ['qq']})
 
     t.end()

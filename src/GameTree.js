@@ -60,6 +60,10 @@ class GameTree {
         tree._cache = draft._cache
         return tree
     }
+
+    toJSON() {
+        return this.root
+    }
 }
 
 module.exports = GameTree
