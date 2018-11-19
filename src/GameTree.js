@@ -48,8 +48,8 @@ class GameTree {
 
     mutate(mutator) {
         let draft = new Draft(this)
-        mutator(draft)
 
+        mutator(draft)
         if (draft.root === this.root) return this
 
         let tree = new GameTree({
