@@ -113,47 +113,64 @@ t.test('addToProperty should not add existing values', t => {
     })
 
     t.deepEqual(newTree.get(id1).data, {B: ['dd']})
-
     t.end()
 })
 
 t.test('removeFromProperty operation', t => {
+    t.deepEqual(tree.get(childId1).data.MA, ['qd', 'qq'])
+
     let newTree = tree.mutate(draft => {
         draft.removeFromProperty(childId1, 'MA', 'qq')
     })
 
+    t.deepEqual(tree.get(childId1).data.MA, ['qd', 'qq'])
     t.deepEqual(newTree.get(childId1).data.MA, ['qd'])
-
     t.end()
 })
 
 t.test('removeFromProperty should remove property entirely when no values are left', t => {
-    newTree = newTree.mutate(draft => {
+    let newTree = tree.mutate(draft => {
         draft.removeFromProperty(childId1, 'W', 'dq')
     })
 
-    t.equal(newTree.get(childId1).data.W, undefined)
-
+    t.assertNot('W' in newTree.get(childId1).data)
     t.end()
 })
 
-/*
+t.test('removeFromProperty should ignore values that do not exist', t => {
+    let newTree = tree.mutate(draft => {
+        draft.removeFromProperty(childId1, 'W', 'dd')
+    })
+
+    t.deepEqual(newTree.get(childId1).data.W, ['dq'])
+    t.end()
+})
+
 t.test('updateProperty operation', t => {
-    let tree = new GameTree()
-    let id = tree.appendNode(tree.root, {B: ['dd']})
+    let values = ['dd', 'ee']
+    let newTree = tree.mutate(draft => {
+        draft.updateProperty(childId1, 'MA', values)
+    })
 
-    tree.updateProperty(id, 'B', ['dq'])
-    let node = tree.getNode(id)
-    t.deepEqual(node.node.B, ['dq'])
-
-    tree.updateProperty(id, 'MA', ['dd', 'dq'])
-    node = tree.getNode(id)
-    t.deepEqual(node.node, {B: ['dq'], MA: ['dd', 'dq']})
-
-    tree.updateProperty(id, 'B', null)
-    node = tree.getNode(id)
-    t.deepEqual(node.node, {MA: ['dd', 'dq']})
+    t.notEqual(newTree, tree)
+    t.deepEqual(tree.get(childId1).data.MA, ['qd', 'qq'])
+    t.notEqual(newTree.get(childId1).data.MA, values)
+    t.deepEqual(newTree.get(childId1).data.MA, values)
 
     t.end()
 })
-*/
+
+t.test('updateProperty should remove property entirely when values is null or empty', t => {
+    let newTree = tree.mutate(draft => {
+        draft.updateProperty(childId1, 'MA', [])
+    })
+
+    t.assertNot('MA' in newTree.get(childId1).data)
+
+    newTree = tree.mutate(draft => {
+        draft.updateProperty(childId1, 'MA', null)
+    })
+
+    t.assertNot('MA' in newTree.get(childId1).data)
+    t.end()
+})

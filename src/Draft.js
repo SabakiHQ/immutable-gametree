@@ -112,7 +112,7 @@ class Draft {
     updateProperty(id, property, values) {
         let node = this.get(id)
 
-        if (values == null) delete node.data[property]
+        if (values == null || values.length === 0) delete node.data[property]
         else node.data[property] = [...values]
     }
 
