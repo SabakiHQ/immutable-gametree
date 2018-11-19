@@ -82,25 +82,40 @@ The `mutator` will be called with a [`Draft`](#class-draft) class. In the `mutat
 
 We use structural sharing to make mutations fairly efficient.
 
-#### `JSON.stringify(tree)`
+#### `tree.toJSON()`
 
-Returns the root [node object](#node-object) (and effectively, all node objects) as JSON.
+Returns `tree.root`.
 
 ### `class Draft`
+#### `draft.root`
+
+See [tree.root](#treeroot).
+
+#### `draft.get(id)`
+
+- `id` `<Primitive>`
+
+See [tree.get(id)](#treegetid).
 
 #### `draft.appendNode(parentId, data)`
 
 - `parentId` `<Primitive>`
 - `data` `<Object>`
 
+Appends a new node with the given `data` to the node with id `parentId`. Returns the id of the new node.
+
 #### `draft.removeNode(id)`
 
 - `id` `<Primitive>`
+
+Removes the node with given `id`. Throws an error if specified `id` represents the root node.
 
 #### `draft.shiftNode(id, direction)`
 
 - `id` `<Primitive>`
 - `direction` `<String>` - One of `'left'`, `'right'`, `'main'`
+
+Changes the position of the node with the given `id` in the children array of its parent node. If `direction` is `'main'`, the node will be shifted to the first position. Returns the new index.
 
 #### `draft.addToProperty(id, property, value)`
 
@@ -108,11 +123,15 @@ Returns the root [node object](#node-object) (and effectively, all node objects)
 - `property` `<String>`
 - `value` `<Primitive>`
 
+Adds the given `value` to the specified `property` of the node with the given `id`. Ignores duplicate values. If data doesn't include the given `property`, it will add it.
+
 #### `draft.removeFromProperty(id, property, value)`
 
 - `id` `<Primitive>`
 - `property` `<String>`
 - `value` `<Primitive>`
+
+Removes the given `value` from the specified `property` of the node with the given `id`. If property list gets empty, the property key will be removed from data.
 
 #### `draft.updateProperty(id, property, values)`
 
@@ -120,7 +139,11 @@ Returns the root [node object](#node-object) (and effectively, all node objects)
 - `property` `<String>`
 - `values` `<Array<Primitive>>`
 
+Sets the specified `property` of the node with the given `id` as `values`. Refrain from mutating `values` to ensure immutability.
+
 #### `draft.removeProperty(id, property)`
 
 - `id` `<Primitive>`
 - `property` `<String>`
+
+Removes the specified `property` from the node.

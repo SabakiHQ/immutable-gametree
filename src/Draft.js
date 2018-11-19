@@ -92,6 +92,7 @@ class Draft {
 
     addToProperty(id, property, value) {
         let node = this.get(id)
+        if (node == null) return
 
         if (node.data[property] == null) {
             node.data[property] = [value]
@@ -102,8 +103,7 @@ class Draft {
 
     removeFromProperty(id, property, value) {
         let node = this.get(id)
-
-        if (node.data[property] == null) return
+        if (node == null || node.data[property] == null) return
 
         node.data[property] = node.data[property].filter(x => x !== value)
         if (node.data[property].length === 0) delete node.data[property]
@@ -111,9 +111,10 @@ class Draft {
 
     updateProperty(id, property, values) {
         let node = this.get(id)
+        if (node == null) return
 
         if (values == null || values.length === 0) delete node.data[property]
-        else node.data[property] = [...values]
+        else node.data[property] = values
     }
 
     removeProperty(id, property) {
