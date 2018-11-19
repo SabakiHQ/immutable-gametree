@@ -147,8 +147,7 @@ t.test('updateProperty operation', t => {
 
     t.notEqual(newTree, tree)
     t.deepEqual(tree.get(childId1).data.MA, ['qd', 'qq'])
-    t.notEqual(newTree.get(childId1).data.MA, values)
-    t.deepEqual(newTree.get(childId1).data.MA, values)
+    t.equal(newTree.get(childId1).data.MA, values)
 
     t.end()
 })
