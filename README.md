@@ -51,6 +51,8 @@ A *node* is represented by an object of the following form:
 }
 ~~~
 
+---
+
 ### `class GameTree`
 #### `new GameTree([options])`
 
@@ -85,6 +87,8 @@ We use structural sharing to make mutations fairly efficient.
 #### `tree.toJSON()`
 
 Returns `tree.root`.
+
+---
 
 ### `class Draft`
 #### `draft.root`
