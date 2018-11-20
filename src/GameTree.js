@@ -82,6 +82,12 @@ class GameTree {
         yield* inner(this.root)
     }
 
+    getLevel(id) {
+        if (id === this.root.id) return 0
+
+        return this.getLevel(this.get(id).parentId) + 1
+    }
+
     getHeight() {
         if (this._heightCache == null) {
             let inner = node => 1 + Math.max(...node.children.map(inner), 0)
