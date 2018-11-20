@@ -15,6 +15,7 @@ class GameTree {
         }
 
         this._cache = {}
+        this._heightCache = null
     }
 
     get(id) {
@@ -59,6 +60,27 @@ class GameTree {
 
         tree._cache = draft._cache
         return tree
+    }
+
+    *listNodes() {
+        function* inner(node) {
+            yield node
+
+            for (let child of node.children) {
+                yield* inner(child)
+            }
+        }
+
+        yield* inner(this.root)
+    }
+
+    getHeight() {
+        if (this._heightCache == null) {
+            let inner = node => 1 + Math.max(...node.children.map(inner), 0)
+            this._heightCache = inner(this.root)
+        }
+
+        return this._heightCache
     }
 
     toJSON() {
