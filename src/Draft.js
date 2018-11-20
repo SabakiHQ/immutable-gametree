@@ -69,14 +69,14 @@ class Draft {
         }
 
         let node = this.get(id)
-        if (node == null) null
+        if (node == null) return null
 
         let {parentId} = node
         let parent = this.get(parentId)
-        if (parent == null) null
+        if (parent == null) return null
 
         let index = parent.children.findIndex(child => child.id === id)
-        if (index < 0) null
+        if (index < 0) return null
 
         let newIndex = direction === 'left' ? Math.max(index - 1, 0)
             : direction === 'right' ? Math.min(index + 1, parent.children.length)

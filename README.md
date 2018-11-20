@@ -106,20 +106,20 @@ See [tree.get(id)](#treegetid).
 - `parentId` `<Primitive>`
 - `data` `<Object>`
 
-Appends a new node with the given `data` to the node with id `parentId`. Returns the id of the new node.
+Appends a new node with the given `data` to the node with id `parentId`. Returns `null` if operation has failed, otherwise the id of the new node.
 
 #### `draft.removeNode(id)`
 
 - `id` `<Primitive>`
 
-Removes the node with given `id`. Throws an error if specified `id` represents the root node.
+Removes the node with given `id`. Throws an error if specified `id` represents the root node. Returns `false` if operation has failed, otherwise `true`.
 
 #### `draft.shiftNode(id, direction)`
 
 - `id` `<Primitive>`
 - `direction` `<String>` - One of `'left'`, `'right'`, `'main'`
 
-Changes the position of the node with the given `id` in the children array of its parent node. If `direction` is `'main'`, the node will be shifted to the first position. Returns the new index.
+Changes the position of the node with the given `id` in the children array of its parent node. If `direction` is `'main'`, the node will be shifted to the first position. Returns `null` if operation has failed, otherwise the new index.
 
 #### `draft.addToProperty(id, property, value)`
 
