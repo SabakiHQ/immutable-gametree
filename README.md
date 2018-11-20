@@ -84,6 +84,14 @@ The `mutator` will be called with a [`Draft`](#class-draft) class. In the `mutat
 
 We use structural sharing to make mutations fairly efficient.
 
+#### `*tree.listNodes()`
+
+A generator function that yields all the nodes of the game tree.
+
+#### `tree.getHeight()`
+
+Returns the height of the tree as an integer.
+
 #### `tree.toJSON()`
 
 Returns `tree.root`.

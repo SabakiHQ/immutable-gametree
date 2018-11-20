@@ -27,3 +27,21 @@ t.test('mutation uses structural sharing', t => {
     t.equal(node, newNode)
     t.end()
 })
+
+t.test('listNodes', t => {
+    let nodes = []
+
+    for (let node of tree.listNodes()) {
+        nodes.push(node)
+    }
+
+    t.equal(nodes.length, 6)
+    t.end()
+})
+
+t.test('getHeight', t => {
+    let height = tree.getHeight()
+
+    t.equal(height, 4)
+    t.end()
+})
