@@ -76,6 +76,10 @@ Searches the whole tree for a node with the specified id and returns a [node obj
 
 Please refrain from mutating the returned object to ensure immutability.
 
+#### `*tree.getSequence(id)`
+
+A generator function that yields [node objects](#node-objects), starting with the node of the given `id` and continuing with its children until we reach a descendant which has multiple or no children.
+
 #### `tree.mutate(mutator)`
 
 - `mutator` `<Function>`

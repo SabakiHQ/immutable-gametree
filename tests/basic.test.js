@@ -16,6 +16,15 @@ t.test('get method', t => {
     t.end()
 })
 
+t.test('getSequence method', t => {
+    let sequence1 = [...tree.getSequence(tree.root.id)]
+    t.deepEqual(sequence1, [tree.root, tree.get(id1)])
+
+    let sequence2 = [...tree.getSequence(childId3)]
+    t.deepEqual(sequence2, [tree.get(childId3), tree.get(subChildId1)])
+    t.end()
+})
+
 t.test('mutation uses structural sharing', t => {
     let newTree = tree.mutate(draft => {
         draft.updateProperty(childId1, 'MA', null)
@@ -28,18 +37,14 @@ t.test('mutation uses structural sharing', t => {
     t.end()
 })
 
-t.test('listNodes', t => {
-    let nodes = []
-
-    for (let node of tree.listNodes()) {
-        nodes.push(node)
-    }
+t.test('listNodes method', t => {
+    let nodes = [...tree.listNodes()]
 
     t.equal(nodes.length, 6)
     t.end()
 })
 
-t.test('getHeight', t => {
+t.test('getHeight method', t => {
     let height = tree.getHeight()
 
     t.equal(height, 4)

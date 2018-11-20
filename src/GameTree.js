@@ -47,6 +47,14 @@ class GameTree {
         return node
     }
 
+    *getSequence(id) {
+        let node = this.get(id)
+        yield node
+
+        if (node.children.length !== 1) return
+        yield* this.getSequence(node.children[0].id)
+    }
+
     mutate(mutator) {
         let draft = new Draft(this)
 
