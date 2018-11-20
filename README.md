@@ -1,6 +1,6 @@
 # @sabaki/immutable-gametree [![Build Status](https://travis-ci.org/SabakiHQ/immutable-gametree.svg?branch=master)](https://travis-ci.org/SabakiHQ/immutable-gametree)
 
-An immutable SGF game tree data type. This is a work in progress.
+An immutable SGF game tree data type.
 
 ## Installation
 
@@ -26,10 +26,10 @@ let newTree = tree.mutate(draft => {
 
 console.log(newTree !== tree)
 // => true
-
+console.log(tree.root.children.length)
+// => 0
 console.log(newTree.root.children.length)
 // => 1
-
 console.log(newTree.root.children[0].children[0].data.W)
 // => ['dq', 'qd']
 ~~~
