@@ -37,6 +37,10 @@ t.test('mutation uses structural sharing', t => {
     t.end()
 })
 
+t.todo('navigate method', t => {
+
+})
+
 t.test('listNodes method', t => {
     let nodes = [...tree.listNodes()]
 
