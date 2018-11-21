@@ -37,8 +37,22 @@ t.test('mutation uses structural sharing', t => {
     t.end()
 })
 
-t.todo('navigate method', t => {
+t.test('navigate method', t => {
+    t.equal(tree.navigate(tree.root.id, 1, {}).id, id1)
+    t.equal(tree.navigate(id1, -1, {}).id, tree.root.id)
+    t.equal(tree.navigate(id1, 1, {}).id, childId1)
+    t.equal(tree.navigate(id1, 1, {[id1]: childId2}).id, childId2)
 
+    t.end()
+})
+
+t.test('navigate multiple steps ahead or behind', t => {
+    t.equal(tree.navigate(childId2, -2, {}).id, tree.root.id)
+    t.equal(tree.navigate(tree.root.id, 3, {[id1]: childId3}).id, subChildId1)
+    t.equal(tree.navigate(tree.root.id, 4, {[id1]: childId3}), null)
+    t.equal(tree.navigate(tree.root.id, -4, {[id1]: childId3}), null)
+
+    t.end()
 })
 
 t.test('listNodes method', t => {
@@ -107,12 +121,19 @@ t.test('getSection method', t => {
     t.end()
 })
 
-t.todo('getCurrentHeight method', t => {
+t.test('getCurrentHeight method', t => {
+    t.equal(tree.getCurrentHeight({}), 3)
+    t.equal(tree.getCurrentHeight({[id1]: childId3}), 4)
 
+    t.end()
 })
 
-t.todo('onCurrentLine method', t => {
+t.test('onCurrentLine method', t => {
+    t.equal(tree.onCurrentLine(tree.root.id, {}), true)
+    t.equal(tree.onCurrentLine(subChildId1, {[id1]: childId2}), false)
+    t.equal(tree.onCurrentLine(subChildId1, {[id1]: childId3}), true)
 
+    t.end()
 })
 
 t.test('getHeight method', t => {

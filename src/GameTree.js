@@ -75,7 +75,7 @@ class GameTree {
 
         if (node == null) return null
         if (step === 0) return node
-        if (step < 0) return navigate(node.parentId, step + 1)
+        if (step < 0) return this.navigate(node.parentId, step + 1)
 
         let nextId = currents[node.id] != null ? currents[node.id]
             : node.children.length > 0 ? node.children[0].id
