@@ -128,10 +128,14 @@ class GameTree {
     getLevel(id) {
         if (id === this.root.id) return 0
 
-        return this.getLevel(this.get(id).parentId) + 1
+        let node = this.get(id)
+        if (node == null) return null
+
+        return this.getLevel(node.parentId) + 1
     }
 
     *getSection(level) {
+        if (level < 0) return
         if (level === 0) {
             yield this.root
             return

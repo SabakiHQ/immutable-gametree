@@ -52,12 +52,28 @@ t.todo('listCurrentNodes method', t => {
 
 })
 
-t.todo('getLevel method', t => {
+t.test('getLevel method', t => {
+    t.equal(tree.getLevel(tree.root.id), 0)
+    t.equal(tree.getLevel(id1), 1)
+    t.equal(tree.getLevel(childId2), 2)
+    t.equal(tree.getLevel(subChildId1), 3)
 
+    t.end()
 })
 
-t.todo('getSection method', t => {
+t.test('getLevel should return null if node is not found', t => {
+    t.equal(tree.getLevel('not found'), null)
+    t.end()
+})
 
+t.test('getSection method', t => {
+    t.deepEqual([...tree.getSection(-1)], [])
+    t.deepEqual([...tree.getSection(0)], [tree.root])
+    t.deepEqual([...tree.getSection(2)], [tree.get(childId1), tree.get(childId2), tree.get(childId3)])
+    t.deepEqual([...tree.getSection(3)], [tree.get(subChildId1)])
+    t.deepEqual([...tree.getSection(4)], [])
+
+    t.end()
 })
 
 t.todo('getCurrentHeight method', t => {
