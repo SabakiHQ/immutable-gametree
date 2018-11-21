@@ -71,14 +71,18 @@ class GameTree {
     }
 
     navigate(id, step, currents) {
-        step = Math.sign(step)
-
         let node = this.get(id)
-        if (step < 0) return this.get(node.parentId)
 
-        return currents[node.id] != null
-            ? this.get(currents[node.id])
-            : node.children[0] || null
+        if (node == null) return null
+        if (step === 0) return node
+        if (step < 0) return navigate(node.parentId, step + 1)
+
+        let nextId = currents[node.id] != null ? currents[node.id]
+            : node.children.length > 0 ? node.children[0]
+            : null
+
+        if (nextId == null) return null
+        return this.navigate(nextId, step - 1, currents)
     }
 
     *listNodes() {
@@ -100,7 +104,7 @@ class GameTree {
         let section = [...this.getSection(level)]
         let index = section.findIndex(node => node.id === startId)
 
-        while (index >= 0) {
+        while (section[index] != null) {
             while (0 <= index && index < section.length) {
                 yield section[index]
                 index += step
