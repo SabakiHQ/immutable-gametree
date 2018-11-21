@@ -44,8 +44,22 @@ t.test('listNodes method', t => {
     t.end()
 })
 
-t.todo('listNodesHorizontally method', t => {
+t.test('listNodesHorizontally method', t => {
+    let list = [
+        tree.root,
+        tree.get(id1),
+        tree.get(childId1),
+        tree.get(childId2),
+        tree.get(childId3),
+        tree.get(subChildId1)
+    ]
 
+    t.deepEqual([...tree.listNodesHorizontally(tree.root.id, 1)], list)
+    t.deepEqual([...tree.listNodesHorizontally(tree.root.id, -1)], [tree.root])
+    t.deepEqual([...tree.listNodesHorizontally(childId3, -1)], list.slice(0, 5).reverse())
+    t.deepEqual([...tree.listNodesHorizontally(subChildId1, -1)], list.slice().reverse())
+
+    t.end()
 })
 
 t.todo('listCurrentNodes method', t => {
