@@ -66,8 +66,21 @@ t.test('listNodesHorizontally method', t => {
     t.end()
 })
 
-t.todo('listCurrentNodes method', t => {
+t.test('listCurrentNodes method', t => {
+    t.deepEqual([...tree.listCurrentNodes({})], [
+        tree.root,
+        tree.get(id1),
+        tree.get(childId1)
+    ])
 
+    t.deepEqual([...tree.listCurrentNodes({[id1]: childId3})], [
+        tree.root,
+        tree.get(id1),
+        tree.get(childId3),
+        tree.get(subChildId1)
+    ])
+
+    t.end()
 })
 
 t.test('getLevel method', t => {
