@@ -19,6 +19,7 @@ class GameTree {
     }
 
     get(id) {
+        if (id == null) return null
         if (id in this._cache) return this._cache[id]
 
         let inner = node => {

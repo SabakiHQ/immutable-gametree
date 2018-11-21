@@ -7,6 +7,7 @@ class Draft {
     }
 
     get(id) {
+        if (id == null) return null
         if (this._cache[id] != null) return this._cache[id]
 
         let node = this.base.get(id)
