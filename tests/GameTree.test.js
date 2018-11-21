@@ -44,6 +44,30 @@ t.test('listNodes method', t => {
     t.end()
 })
 
+t.todo('listNodesHorizontally method', t => {
+
+})
+
+t.todo('listCurrentNodes method', t => {
+
+})
+
+t.todo('getLevel method', t => {
+
+})
+
+t.todo('getSection method', t => {
+
+})
+
+t.todo('getCurrentHeight method', t => {
+
+})
+
+t.todo('onCurrentLine method', t => {
+
+})
+
 t.test('getHeight method', t => {
     let height = tree.getHeight()
 
