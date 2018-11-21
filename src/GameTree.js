@@ -111,7 +111,7 @@ class GameTree {
             }
 
             level += step
-            section = [...this.getSection(level)]
+            section = step > 0 ? [].concat(...section.map(node => node.children)) : [...this.getSection(level)]
             index = step > 0 ? 0 : section.length - 1
         }
     }

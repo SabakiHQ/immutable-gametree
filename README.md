@@ -38,18 +38,30 @@ console.log(newTree.root.children[0].children[0].data.W)
 
 ### Node Object
 
-A *node* is represented by an object of the following form:
+A node is represented by an object of the following form:
 
 ~~~js
 {
     id: <Primitive>,
     data: {
-        [property]: <Array<Primitive>>
+        [property: <String>]: <Array<Primitive>>
     },
     parentId: <Primitive> | null,
     children: <Array<NodeObject>>
 }
 ~~~
+
+### Currents Object
+
+A node can have a distinguished child. You can specify the distinguished children of nodes with an object of the following form:
+
+~~~js
+{
+    [id: <Primitive>]: <Primitive>
+}
+~~~
+
+Every value is the id of the distinguished child of the node with its key as id. If the currents object doesn't specify a distinguished child for a node, the default will be the first child index-wise.
 
 ---
 
@@ -88,13 +100,69 @@ The `mutator` will be called with a [`Draft`](#class-draft) class. In the `mutat
 
 We use structural sharing to make mutations fairly efficient.
 
+#### `tree.navigate(id, step, currents)`
+
+- `id` `<Primitive>`
+- `step` `<Integer>`
+- `currents` [`<CurrentsObject>`](#currents-object)
+
+Starts at the node with the given `id`, takes the specified `step` forward or backward with respect to `currents`, and returns the node at the new position.
+
 #### `*tree.listNodes()`
 
 A generator function that yields all the nodes of the game tree.
 
+#### `*tree.listNodesHorizontally(startId, step)`
+
+- `startId` `<Primitive>`
+- `step` `<Integer>` - `1` or `-1`
+
+A generator function that yields the nodes of the game tree by walking horizontally along the game tree (left if `step` is `-1`, otherwise right) starting at the node with id `startId`.
+
+#### `*tree.listCurrentNodes(currents)`
+
+- `currents` [`<CurrentsObject>`](#currents-object)
+
+A generator function that yields the root node and its distinguished descendants in level order.
+
+#### `*tree.listMainNodes()`
+
+Equivalent to `tree.listCurrentNodes({})`.
+
+#### `tree.getLevel(id)`
+
+- `id` `<Primitive>`
+
+Returns an integer denoting the level of the node with the given `id`. If node doesn't exist, it will return `null`.
+
+#### `*tree.getSection(level)`
+
+- `level` `<Integer>`
+
+A generator function that yields all nodes of the given `level`.
+
+#### `tree.getCurrentHeight(currents)`
+
+- `currents` [`<CurrentsObject>`](#currents-object)
+
+Equivalent to `[...tree.listCurrentNodes(currents)].length`.
+
 #### `tree.getHeight()`
 
 Returns the height of the tree as an integer.
+
+#### `tree.onCurrentLine(id, currents)`
+
+- `id` `<Primitive>`
+- `currents` [`<CurrentsObject>`](#currents-object)
+
+Returns whether the node with the given `id` is the root node or a distinguished descendant of the root node with respect to `currents`.
+
+#### `tree.onMainLine(id)`
+
+- `id` `<Primitive>`
+
+Equivalent to `tree.onCurrentLine(id, {})`.
 
 #### `tree.toJSON()`
 
