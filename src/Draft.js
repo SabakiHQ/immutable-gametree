@@ -65,7 +65,7 @@ class Draft {
 
     shiftNode(id, direction) {
         if (!['left', 'right', 'main'].includes(direction)) {
-            throw new Error('Invalid value for direction')
+            throw new Error(`Invalid value for direction, only 'left', 'right', or 'main' allowed`)
         }
 
         let node = this.get(id)

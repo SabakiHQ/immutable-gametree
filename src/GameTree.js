@@ -98,7 +98,7 @@ class GameTree {
     }
 
     *listNodesHorizontally(startId, step) {
-        step = Math.sign(step) || 1
+        if (Math.abs(step) !== 1) throw new Error('Invalid value for step, only -1 or 1 allowed')
 
         let level = this.getLevel(startId)
         let section = [...this.getSection(level)]
