@@ -117,13 +117,20 @@ class GameTree {
         }
     }
 
-    *listCurrentNodes(currents) {
-        let node = this.root
+    *listNodesVertically(startId, step, currents) {
+        if (Math.abs(step) !== 1) throw new Error('Invalid value for step, only -1 or 1 allowed')
+
+        let id = startId
+        let node = this.get(id)
 
         while (node != null) {
             yield node
-            node = this.navigate(node.id, 1, currents)
+            node = this.navigate(node.id, step, currents)
         }
+    }
+
+    *listCurrentNodes(currents) {
+        yield* this.listNodesVertically(this.root.id, 1, currents)
     }
 
     *listMainNodes() {

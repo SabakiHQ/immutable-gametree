@@ -110,20 +110,28 @@ Starts at the node with the given `id`, takes the specified `step` forward or ba
 
 #### `*tree.listNodes()`
 
-A generator function that yields all the nodes of the game tree.
+A generator function that yields all the nodes as [node objects](#node-object) of the game tree.
 
 #### `*tree.listNodesHorizontally(startId, step)`
 
 - `startId` `<Primitive>`
 - `step` `<Integer>` - `1` or `-1`
 
-A generator function that yields the nodes of the game tree by walking horizontally along the game tree (left if `step` is `-1`, otherwise right) starting at the node with id `startId`.
+A generator function that yields the nodes as [node objects](#node-object) of the game tree by walking horizontally along the game tree (left if `step` is `-1`, otherwise right) starting at the node with id `startId`.
+
+#### `*tree.listNodesVertically(startId, step, currents)`
+
+- `startId` `<Primitive>`
+- `step` `<Integer>` - `1` or `-1`
+- `currents` [`<CurrentsObject>`](#currents-object)
+
+A generator function that yields the nodes as [node objects](#node-object) of the game tree by walking vertically along given `currents` (up if `step` is `-1`, otherwise down) starting at the node with id `startId`.
 
 #### `*tree.listCurrentNodes(currents)`
 
 - `currents` [`<CurrentsObject>`](#currents-object)
 
-A generator function that yields the root node and its distinguished descendants in level order.
+Equivalent to `tree.listNodesVertically(tree.root.id, 1, currents)`.
 
 #### `*tree.listMainNodes()`
 

@@ -80,6 +80,18 @@ t.test('listNodesHorizontally method', t => {
     t.end()
 })
 
+t.test('listNodesVertically method', t => {
+    t.deepEqual([...tree.listNodesVertically(tree.root.id, 1, {})], [tree.root, tree.get(id1), tree.get(childId1)])
+    t.deepEqual([...tree.listNodesVertically(tree.root.id, -1, {})], [tree.root])
+    t.deepEqual([...tree.listNodesVertically(tree.root.id, 1, {[id1]: childId3})], [
+        tree.root, tree.get(id1), tree.get(childId3), tree.get(subChildId1)
+    ])
+    t.deepEqual([...tree.listNodesVertically(childId3, -1, {})], [tree.get(childId3), tree.get(id1), tree.root])
+    t.deepEqual([...tree.listNodesVertically(subChildId1, -1)], [tree.get(subChildId1), tree.get(childId3), tree.get(id1), tree.root])
+
+    t.end()
+})
+
 t.test('listCurrentNodes method', t => {
     t.deepEqual([...tree.listCurrentNodes({})], [
         tree.root,
