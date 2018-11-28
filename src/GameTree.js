@@ -50,6 +50,7 @@ class GameTree {
 
     *getSequence(id) {
         let node = this.get(id)
+        if (node == null) return
         yield node
 
         if (node.children.length !== 1) return

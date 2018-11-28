@@ -22,6 +22,8 @@ t.test('getSequence method', t => {
 
     let sequence2 = [...tree.getSequence(childId3)]
     t.deepEqual(sequence2, [tree.get(childId3), tree.get(subChildId1)])
+
+    t.deepEqual([...tree.getSequence(null)], [])
     t.end()
 })
 
@@ -42,6 +44,7 @@ t.test('navigate method', t => {
     t.equal(tree.navigate(id1, -1, {}).id, tree.root.id)
     t.equal(tree.navigate(id1, 1, {}).id, childId1)
     t.equal(tree.navigate(id1, 1, {[id1]: childId2}).id, childId2)
+    t.equal(tree.navigate('not found', 1, {}), null)
 
     t.end()
 })
@@ -76,6 +79,7 @@ t.test('listNodesHorizontally method', t => {
     t.deepEqual([...tree.listNodesHorizontally(tree.root.id, -1)], [tree.root])
     t.deepEqual([...tree.listNodesHorizontally(childId3, -1)], list.slice(0, 5).reverse())
     t.deepEqual([...tree.listNodesHorizontally(subChildId1, -1)], list.slice().reverse())
+    t.deepEqual([...tree.listNodesHorizontally(null, 1)], [])
 
     t.end()
 })
@@ -88,6 +92,7 @@ t.test('listNodesVertically method', t => {
     ])
     t.deepEqual([...tree.listNodesVertically(childId3, -1, {})], [tree.get(childId3), tree.get(id1), tree.root])
     t.deepEqual([...tree.listNodesVertically(subChildId1, -1)], [tree.get(subChildId1), tree.get(childId3), tree.get(id1), tree.root])
+    t.deepEqual([...tree.listNodesVertically(null, 1)], [])
 
     t.end()
 })
