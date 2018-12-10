@@ -19,22 +19,26 @@ class GameTree {
     }
 
     get(id) {
-        if (id == null) return null
-        if (id in this._cache) return this._cache[id]
+        let node = null
+        if (id == null) return node
 
-        let inner = node => {
-            this._cache[node.id] = node
-            if (node.id === id) return node
+        if (id in this._cache) {
+            node = this._cache[id]
+        } else {
+            let inner = node => {
+                this._cache[node.id] = node
+                if (node.id === id) return node
 
-            for (let child of node.children) {
-                let result = inner(child)
-                if (result != null) return result
+                for (let child of node.children) {
+                    let result = inner(child)
+                    if (result != null) return result
+                }
+
+                return null
             }
 
-            return null
+            node = inner(this.root)
         }
-
-        let node = inner(this.root)
 
         if (node == null) {
             this._cache[id] = null
