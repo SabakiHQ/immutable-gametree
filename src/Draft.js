@@ -34,6 +34,15 @@ class Draft {
         return nodeCopy
     }
 
+    _getLevel(id) {
+        if (id === this.root.id) return 0
+
+        let node = this.get(id)
+        if (node == null) return null
+
+        return this._getLevel(node.parentId) + 1
+    }
+
     appendNode(parentId, data) {
         let parent = this.get(parentId)
         if (parent == null) return null
@@ -45,7 +54,7 @@ class Draft {
 
         this._cache[id] = node
 
-        if (this.base.getLevel(parentId) === this._heightCache - 1) {
+        if (this._getLevel(parentId) === this._heightCache - 1) {
             this._heightCache++
         }
 
@@ -68,7 +77,7 @@ class Draft {
 
         this._cache[id] = null
 
-        if (this.base.getLevel(id) === this._heightCache - 1) {
+        if (this._getLevel(id) === this._heightCache - 1) {
             this._heightCache = null
         }
 
