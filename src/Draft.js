@@ -3,17 +3,18 @@ class Draft {
         this.base = base
         this.root = base.root
 
-        this._cache = {}
+        this._nodeCache = {}
+        this._retainNodeCache = true
         this._heightCache = null
     }
 
     get(id) {
         if (id == null) return null
-        if (this._cache[id] != null) return this._cache[id]
+        if (this._nodeCache[id] != null) return this._nodeCache[id]
 
         let node = this.base.get(id)
         if (node == null) {
-            this._cache[id] = null
+            this._nodeCache[id] = null
             return null
         }
 
@@ -28,7 +29,7 @@ class Draft {
             if (childIndex >= 0) parentCopy.children[childIndex] = nodeCopy
         }
 
-        this._cache[id] = nodeCopy
+        this._nodeCache[id] = nodeCopy
         if (this.root.id === id) this.root = nodeCopy
 
         return nodeCopy
@@ -52,7 +53,7 @@ class Draft {
 
         parent.children.push(node)
 
-        this._cache[id] = node
+        this._nodeCache[id] = node
 
         if (this._getLevel(parentId) === this._heightCache - 1) {
             this._heightCache++
@@ -75,7 +76,7 @@ class Draft {
         if (index >= 0) parent.children.splice(index, 1)
         else return false
 
-        this._cache[id] = null
+        this._nodeCache[id] = null
 
         if (this._getLevel(id) === this._heightCache - 1) {
             this._heightCache = null
@@ -109,6 +110,19 @@ class Draft {
         }
 
         return newIndex
+    }
+
+    makeRoot(id) {
+        if (id === this.root.id) return true
+
+        let node = this.get(id)
+        if (node == null) return false
+
+        this.root = node
+        this._retainNodeCache = false
+        this._heightCache = null
+
+        return true
     }
 
     addToProperty(id, property, value) {

@@ -14,7 +14,7 @@ class GameTree {
             children: []
         }
 
-        this._cache = {}
+        this._nodeCache = {}
         this._heightCache = null
     }
 
@@ -22,11 +22,11 @@ class GameTree {
         let node = null
         if (id == null) return node
 
-        if (id in this._cache) {
-            node = this._cache[id]
+        if (id in this._nodeCache) {
+            node = this._nodeCache[id]
         } else {
             let inner = node => {
-                this._cache[node.id] = node
+                this._nodeCache[node.id] = node
                 if (node.id === id) return node
 
                 for (let child of node.children) {
@@ -41,12 +41,12 @@ class GameTree {
         }
 
         if (node == null) {
-            this._cache[id] = null
+            this._nodeCache[id] = null
             return null
         }
 
         for (let child of node.children) {
-            this._cache[child.id] = child
+            this._nodeCache[child.id] = child
         }
 
         return node
@@ -73,7 +73,7 @@ class GameTree {
             root: draft.root
         })
 
-        tree._cache = draft._cache
+        if (draft._retainNodeCache) tree._nodeCache = draft._nodeCache
         tree._heightCache = draft._heightCache
 
         return tree

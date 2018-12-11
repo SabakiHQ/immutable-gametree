@@ -157,7 +157,7 @@ Equivalent to `[...tree.listCurrentNodes(currents)].length`.
 
 #### `tree.getHeight()`
 
-Returns the height of the tree as an integer.
+Calculates and returns the height of the tree as an integer. This value will be cached.
 
 #### `tree.onCurrentLine(id, currents)`
 
@@ -208,6 +208,12 @@ Removes the node with given `id`. Throws an error if specified `id` represents t
 - `direction` `<String>` - One of `'left'`, `'right'`, `'main'`
 
 Changes the position of the node with the given `id` in the children array of its parent node. If `direction` is `'main'`, the node will be shifted to the first position. Returns `null` if operation has failed, otherwise the new index.
+
+#### `draft.makeRoot(id)`
+
+- `id` `<Primitive>`
+
+Makes the node with the given `id` the root node of the mutated tree. Returns `false` if operation has failed, otherwise `true`.
 
 #### `draft.addToProperty(id, property, value)`
 
