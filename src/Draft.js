@@ -3,14 +3,15 @@ class Draft {
         this.base = base
         this.root = base.root
 
+        this._passOnNodeCache = true
+
         this._nodeCache = {}
-        this._retainNodeCache = true
         this._heightCache = null
     }
 
     get(id) {
         if (id == null) return null
-        if (this._nodeCache[id] != null) return this._nodeCache[id]
+        if (id in this._nodeCache) return this._nodeCache[id]
 
         let node = this.base.get(id)
         if (node == null) {
@@ -119,7 +120,7 @@ class Draft {
         if (node == null) return false
 
         this.root = node
-        this._retainNodeCache = false
+        this._passOnNodeCache = false
         this._heightCache = null
 
         return true

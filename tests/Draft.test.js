@@ -82,6 +82,18 @@ t.test('shiftNode should not move nodes out of bounds', t => {
     t.end()
 })
 
+t.test('makeRoot operation', t => {
+    let newTree = tree.mutate(draft => {
+        draft.makeRoot(id1)
+    })
+
+    t.notEqual(newTree, tree)
+    t.equal(newTree.get(tree.root.id), null)
+    t.deepEqual(newTree.root, tree.get(id1))
+
+    t.end()
+})
+
 t.test('addToProperty operation', t => {
     let newTree = tree.mutate(draft => {
         draft.addToProperty(id1, 'C', 'Hello World!')

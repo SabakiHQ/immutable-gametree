@@ -73,7 +73,7 @@ class GameTree {
             root: draft.root
         })
 
-        if (draft._retainNodeCache) tree._nodeCache = draft._nodeCache
+        if (draft._passOnNodeCache) tree._nodeCache = draft._nodeCache
         tree._heightCache = draft._heightCache
 
         return tree
