@@ -63,6 +63,7 @@ class GameTree {
 
     mutate(mutator) {
         let draft = new Draft(this)
+        draft._heightCache = this._heightCache
 
         mutator(draft)
         if (draft.root === this.root) return this
@@ -73,6 +74,8 @@ class GameTree {
         })
 
         tree._cache = draft._cache
+        tree._heightCache = draft._heightCache
+
         return tree
     }
 

@@ -4,6 +4,7 @@ class Draft {
         this.root = base.root
 
         this._cache = {}
+        this._heightCache = null
     }
 
     get(id) {
@@ -41,7 +42,9 @@ class Draft {
         let node = {id, data, parentId, children: []}
 
         parent.children.push(node)
+
         this._cache[id] = node
+        this._heightCache = null
 
         return id
     }
@@ -61,6 +64,8 @@ class Draft {
         else return false
 
         this._cache[id] = null
+        this._heightCache = null
+
         return true
     }
 
