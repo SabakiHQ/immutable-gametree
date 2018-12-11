@@ -44,7 +44,10 @@ class Draft {
         parent.children.push(node)
 
         this._cache[id] = node
-        this._heightCache = null
+
+        if (this.base.getLevel(parentId) === this._heightCache - 1) {
+            this._heightCache++
+        }
 
         return id
     }
@@ -64,7 +67,10 @@ class Draft {
         else return false
 
         this._cache[id] = null
-        this._heightCache = null
+
+        if (this.base.getLevel(id) === this._heightCache - 1) {
+            this._heightCache = null
+        }
 
         return true
     }
