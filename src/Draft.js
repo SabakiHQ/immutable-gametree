@@ -46,12 +46,17 @@ class Draft {
     }
 
     appendNode(parentId, data) {
-        let parent = this.get(parentId)
-        if (parent == null) return null
-
         let id = this.base.getId()
-        let node = {id, data, parentId, children: []}
+        let result = this.UNSAFE_appendNodeWithId(parentId, id, data)
 
+        return result ? id : null
+    }
+
+    UNSAFE_appendNodeWithId(parentId, id, data) {
+        let parent = this.get(parentId)
+        if (parent == null) return false
+
+        let node = {id, data, parentId, children: []}
         parent.children.push(node)
 
         this._nodeCache[id] = node
@@ -60,7 +65,7 @@ class Draft {
             this._heightCache++
         }
 
-        return id
+        return true
     }
 
     removeNode(id) {
@@ -128,18 +133,20 @@ class Draft {
 
     addToProperty(id, property, value) {
         let node = this.get(id)
-        if (node == null) return
+        if (node == null) return false
 
         if (node.data[property] == null) {
             node.data[property] = [value]
         } else if (!node.data[property].includes(value)) {
             node.data[property] = [...node.data[property], value]
         }
+
+        return true
     }
 
     removeFromProperty(id, property, value) {
         let node = this.get(id)
-        if (node == null || node.data[property] == null) return
+        if (node == null || node.data[property] == null) return false
 
         node.data[property] = node.data[property].filter(x => x !== value)
         if (node.data[property].length === 0) delete node.data[property]
@@ -147,14 +154,14 @@ class Draft {
 
     updateProperty(id, property, values) {
         let node = this.get(id)
-        if (node == null) return
+        if (node == null) return false
 
         if (values == null || values.length === 0) delete node.data[property]
         else node.data[property] = values
     }
 
     removeProperty(id, property) {
-        this.updateProperty(id, property, null)
+        return this.updateProperty(id, property, null)
     }
 }
 

@@ -196,6 +196,16 @@ See [tree.get(id)](#treegetid).
 
 Appends a new node with the given `data` to the node with id `parentId`. Returns `null` if operation has failed, otherwise the id of the new node.
 
+#### `draft.UNSAFE_appendNodeWithId(parentId, id, data)`
+
+- `parentId` `<Primitive>`
+- `id` `<Primitive>`
+- `data` `<Object>`
+
+Appends a new node with the given `id` and `data` to the node with id `parentId`. Returns `false` if operation has failed, otherwise `true`.
+
+Make sure the `id` provided does not already exist in the tree and that the `getId` function will never return `id`. We won't do any checks for you.
+
 #### `draft.removeNode(id)`
 
 - `id` `<Primitive>`
@@ -221,7 +231,7 @@ Makes the node with the given `id` the root node of the mutated tree. Returns `f
 - `property` `<String>`
 - `value` `<Primitive>`
 
-Adds the given `value` to the specified `property` of the node with the given `id`. Ignores duplicate values. If data doesn't include the given `property`, it will add it.
+Adds the given `value` to the specified `property` of the node with the given `id`. Ignores duplicate values. If data doesn't include the given `property`, it will add it. Returns `false` if operation has failed, otherwise `true`.
 
 #### `draft.removeFromProperty(id, property, value)`
 
@@ -229,7 +239,7 @@ Adds the given `value` to the specified `property` of the node with the given `i
 - `property` `<String>`
 - `value` `<Primitive>`
 
-Removes the given `value` from the specified `property` of the node with the given `id`. If property list gets empty, the property key will be removed from data.
+Removes the given `value` from the specified `property` of the node with the given `id`. If property list gets empty, the property key will be removed from data. Returns `false` if operation has failed, otherwise `true`.
 
 #### `draft.updateProperty(id, property, values)`
 
@@ -237,11 +247,11 @@ Removes the given `value` from the specified `property` of the node with the giv
 - `property` `<String>`
 - `values` `<Array<Primitive>>`
 
-Sets the specified `property` of the node with the given `id` as `values`. Refrain from mutating `values` to ensure immutability.
+Sets the specified `property` of the node with the given `id` as `values`. Refrain from mutating `values` to ensure immutability. Returns `false` if operation has failed, otherwise `true`.
 
 #### `draft.removeProperty(id, property)`
 
 - `id` `<Primitive>`
 - `property` `<String>`
 
-Removes the specified `property` from the node.
+Removes the specified `property` from the node. Returns `false` if operation has failed, otherwise `true`.
