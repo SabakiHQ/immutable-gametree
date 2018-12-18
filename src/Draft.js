@@ -150,6 +150,8 @@ class Draft {
 
         node.data[property] = node.data[property].filter(x => x !== value)
         if (node.data[property].length === 0) delete node.data[property]
+
+        return true
     }
 
     updateProperty(id, property, values) {
@@ -158,6 +160,8 @@ class Draft {
 
         if (values == null || values.length === 0) delete node.data[property]
         else node.data[property] = values
+
+        return true
     }
 
     removeProperty(id, property) {
