@@ -89,7 +89,8 @@ t.test('makeRoot operation', t => {
 
     t.notEqual(newTree, tree)
     t.equal(newTree.get(tree.root.id), null)
-    t.deepEqual(newTree.root, tree.get(id1))
+    t.deepEqual(newTree.root, Object.assign({}, tree.get(id1), {parentId: null}))
+    t.equal(newTree.root.parentId, null)
 
     t.end()
 })

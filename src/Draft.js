@@ -124,7 +124,9 @@ class Draft {
         let node = this.get(id)
         if (node == null) return false
 
+        node.parentId = null
         this.root = node
+
         this._passOnNodeCache = false
         this._heightCache = null
 
