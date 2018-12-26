@@ -6,7 +6,8 @@ class Draft {
         this._passOnNodeCache = true
 
         this._nodeCache = {}
-        this._heightCache = null
+        this._heightCache = base._heightCache
+        this._structureHashCache = base._structureHashCache
     }
 
     get(id) {
@@ -60,6 +61,7 @@ class Draft {
         parent.children.push(node)
 
         this._nodeCache[id] = node
+        this._structureHashCache = null
 
         if (this._getLevel(parentId) === this._heightCache - 1) {
             this._heightCache++
@@ -83,6 +85,7 @@ class Draft {
         else return false
 
         this._nodeCache[id] = null
+        this._structureHashCache = null
 
         if (this._getLevel(id) === this._heightCache - 1) {
             this._heightCache = null
@@ -115,6 +118,8 @@ class Draft {
             parent.children.splice(newIndex, 0, child)
         }
 
+        this._structureHashCache = null
+
         return newIndex
     }
 
@@ -129,6 +134,7 @@ class Draft {
 
         this._passOnNodeCache = false
         this._heightCache = null
+        this._structureHashCache = null
 
         return true
     }

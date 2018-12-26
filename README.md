@@ -157,7 +157,11 @@ Equivalent to `[...tree.listCurrentNodes(currents)].length`.
 
 #### `tree.getHeight()`
 
-Calculates and returns the height of the tree as an integer. This value will be cached.
+Calculates and returns the height of the tree as an integer. This value will be cached across mutations when possible.
+
+#### `tree.getStructureHash()`
+
+Calculates and returns a hash of the tree structure as a string. This value will be cached across mutations when possible.
 
 #### `tree.onCurrentLine(id, currents)`
 

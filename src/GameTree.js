@@ -1,3 +1,4 @@
+const crypto = require('crypto')
 const Draft = require('./Draft')
 
 class GameTree {
@@ -16,6 +17,7 @@ class GameTree {
 
         this._nodeCache = {}
         this._heightCache = null
+        this._structureHashCache = null
     }
 
     get(id) {
@@ -63,7 +65,6 @@ class GameTree {
 
     mutate(mutator) {
         let draft = new Draft(this)
-        draft._heightCache = this._heightCache
 
         mutator(draft)
         if (draft.root === this.root) return this
@@ -74,6 +75,7 @@ class GameTree {
         })
 
         if (draft._passOnNodeCache) tree._nodeCache = draft._nodeCache
+        tree._structureHashCache = draft._structureHashCache
         tree._heightCache = draft._heightCache
 
         return tree
@@ -187,6 +189,18 @@ class GameTree {
         }
 
         return this._heightCache
+    }
+
+    getStructureHash() {
+        if (this._structureHashCache == null) {
+            let inner = node => crypto.createHash('sha1')
+                .update(JSON.stringify([node.id, node.children.map(inner)]))
+                .digest('hex')
+
+            this._structureHashCache = inner(this.root)
+        }
+
+        return this._structureHashCache
     }
 
     onCurrentLine(id, currents) {

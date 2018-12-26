@@ -159,3 +159,21 @@ t.test('getHeight method', t => {
     t.equal(height, 4)
     t.end()
 })
+
+t.test('getStructureHash method', t => {
+    let hash = tree.getStructureHash()
+
+    let sameStructure = tree.mutate(draft => {
+        draft.addToProperty(draft.root.id, 'MA', 'aa')
+        draft.removeProperty(childId1, 'MA')
+    })
+
+    let differentStructure = sameStructure.mutate(draft => {
+        draft.appendNode(draft.root.id, {})
+    })
+
+    t.equal(hash, sameStructure.getStructureHash())
+    t.notEqual(hash, differentStructure.getStructureHash())
+
+    t.end()
+})
