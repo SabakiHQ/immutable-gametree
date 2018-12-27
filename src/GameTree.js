@@ -193,11 +193,16 @@ class GameTree {
 
     getStructureHash() {
         if (this._structureHashCache == null) {
-            let inner = node => crypto.createHash('sha1')
-                .update(JSON.stringify([node.id, node.children.map(inner)]))
-                .digest('hex')
+            let hash = crypto.createHash('sha1')
+            let inner = node => {
+                hash.update('[' + JSON.stringify(node.id) + ',')
+                node.children.forEach(inner)
+                hash.update(']')
 
-            this._structureHashCache = inner(this.root)
+                return hash
+            }
+
+            this._structureHashCache = inner(this.root).digest('hex')
         }
 
         return this._structureHashCache
