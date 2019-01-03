@@ -6,6 +6,7 @@ class Draft {
         this._passOnNodeCache = true
 
         this._nodeCache = {}
+        this._idAliases = base._idAliases
         this._heightCache = base._heightCache
         this._structureHashCache = base._structureHashCache
     }
@@ -47,6 +48,29 @@ class Draft {
     }
 
     appendNode(parentId, data) {
+        let parent = this.get(parentId)
+        if (parent == null) return null
+
+        // Merge when possible
+
+        let [mergeWithId, mergedData] = (() => {
+            for (let child of parent.children) {
+                let mergedData = this.base.merger(child.data, data)
+                if (mergedData != null) return [child.id, mergedData]
+            }
+
+            return [null, null]
+        })()
+
+        if (mergeWithId != null) {
+            let node = this.get(mergeWithId)
+            node.data = mergedData
+
+            return node.id
+        }
+
+        // Append new node
+
         let id = this.base.getId()
         let result = this.UNSAFE_appendNodeWithId(parentId, id, data)
 

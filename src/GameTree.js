@@ -2,11 +2,13 @@ const crypto = require('crypto')
 const Draft = require('./Draft')
 
 class GameTree {
-    constructor({getId = null, root = null} = {}) {
+    constructor({getId = null, merger = null, root = null} = {}) {
         this.getId = getId || (() => {
             let id = 0
             return () => id++
         })()
+
+        this.merger = merger || (() => null)
 
         this.root = root || {
             id: this.getId(),
@@ -16,6 +18,7 @@ class GameTree {
         }
 
         this._nodeCache = {}
+        this._idAliases = {}
         this._heightCache = null
         this._structureHashCache = null
     }
@@ -23,6 +26,7 @@ class GameTree {
     get(id) {
         let node = null
         if (id == null) return node
+        if (id in this._idAliases) return this.get(this._idAliases[id])
 
         if (id in this._nodeCache) {
             node = this._nodeCache[id]
@@ -71,10 +75,12 @@ class GameTree {
 
         let tree = new GameTree({
             getId: this.getId,
+            merger: this.merger,
             root: draft.root
         })
 
         if (draft._passOnNodeCache) tree._nodeCache = draft._nodeCache
+        tree._idAliases = draft._idAliases
         tree._structureHashCache = draft._structureHashCache
         tree._heightCache = draft._heightCache
 
