@@ -155,8 +155,13 @@ t.test('onCurrentLine method', t => {
 
 t.test('getHeight method', t => {
     let height = tree.getHeight()
+    let newTree = tree.mutate(draft => {
+        draft.appendNode(subChildId1, {})
+    })
 
     t.equal(height, 4)
+    t.equal(newTree.getHeight(), 5)
+
     t.end()
 })
 

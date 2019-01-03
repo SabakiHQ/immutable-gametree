@@ -15,6 +15,20 @@ t.test('appendNode operation', t => {
     t.end()
 })
 
+t.test('appendNode should merge nodes according to merge function', t => {
+    let newId
+    let newTree = tree.mutate(draft => {
+        newId = draft.appendNode(draft.root.id, {B: ['dd']})
+        draft.UNSAFE_appendNodeWithId(draft.root.id, 'hello', {B: ['dd']})
+    })
+
+    t.equal(newId, id1)
+    t.equal(newTree.get('hello'), newTree.get(id1))
+    t.equal([...newTree.listNodes()].length, [...tree.listNodes()].length)
+
+    t.end()
+})
+
 t.test('removeNode operation', t => {
     let newTree = tree.mutate(draft => {
         draft.removeNode(childId2)
