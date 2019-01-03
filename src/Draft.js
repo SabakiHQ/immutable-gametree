@@ -50,9 +50,18 @@ class Draft {
 
     appendNode(parentId, data) {
         let id = this.base.getId()
-        let result = this.UNSAFE_appendNodeWithId(parentId, id, data)
+        let success = this.UNSAFE_appendNodeWithId(parentId, id, data)
+        if (!success) return null
 
-        return !result ? null : id in this._idAliases ? this._idAliases[id] : id
+        let merged = id in this._idAliases
+        if (!merged) return id
+
+        // If a merge occured, clean up id alias since id hasn't been exposed
+
+        let result = this._idAliases[id]
+        delete this._idAliases[id]
+
+        return result
     }
 
     UNSAFE_appendNodeWithId(parentId, id, data) {
@@ -61,7 +70,7 @@ class Draft {
 
         let [mergeWithId, mergedData] = (() => {
             for (let child of parent.children) {
-                let mergedData = this.base.merger(child.data, data)
+                let mergedData = this.base.merger(child, data)
                 if (mergedData != null) return [child.id, mergedData]
             }
 
