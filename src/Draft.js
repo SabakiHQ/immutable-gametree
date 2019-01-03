@@ -13,6 +13,7 @@ class Draft {
 
     get(id) {
         if (id == null) return null
+        if (id in this._idAliases) return this.get(this._idAliases[id])
         if (id in this._nodeCache) return this._nodeCache[id]
 
         let node = this.base.get(id)
@@ -48,10 +49,15 @@ class Draft {
     }
 
     appendNode(parentId, data) {
-        let parent = this.get(parentId)
-        if (parent == null) return null
+        let id = this.base.getId()
+        let result = this.UNSAFE_appendNodeWithId(parentId, id, data)
 
-        // Merge when possible
+        return !result ? null : id in this._idAliases ? this._idAliases[id] : id
+    }
+
+    UNSAFE_appendNodeWithId(parentId, id, data) {
+        let parent = this.get(parentId)
+        if (parent == null) return false
 
         let [mergeWithId, mergedData] = (() => {
             for (let child of parent.children) {
@@ -66,29 +72,17 @@ class Draft {
             let node = this.get(mergeWithId)
             node.data = mergedData
 
-            return node.id
-        }
+            this._idAliases[id] = mergeWithId
+        } else {
+            let node = {id, data, parentId, children: []}
+            parent.children.push(node)
 
-        // Append new node
+            this._nodeCache[id] = node
+            this._structureHashCache = null
 
-        let id = this.base.getId()
-        let result = this.UNSAFE_appendNodeWithId(parentId, id, data)
-
-        return result ? id : null
-    }
-
-    UNSAFE_appendNodeWithId(parentId, id, data) {
-        let parent = this.get(parentId)
-        if (parent == null) return false
-
-        let node = {id, data, parentId, children: []}
-        parent.children.push(node)
-
-        this._nodeCache[id] = node
-        this._structureHashCache = null
-
-        if (this._getLevel(parentId) === this._heightCache - 1) {
-            this._heightCache++
+            if (this._getLevel(parentId) === this._heightCache - 1) {
+                this._heightCache++
+            }
         }
 
         return true
