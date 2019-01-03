@@ -70,11 +70,26 @@ Every value is the id of the distinguished child of the node with its key as id.
 
 - `options` `<Object>` *(optional)*
     - `getId` `<Function>` *(optional)*
+    - `merger` `<Function>` *(optional)*
     - `root` [`<NodeObject>`](#node-object) *(optional)*
 
 #### `tree.getId`
 
 `<Function>` - The `getId` function will be called to get an id for each appended node. It should return a primitive value which is unique for each call. Defaults to a simple counter.
+
+This property will be inherited during mutations.
+
+#### `tree.merger`
+
+`<Function>` - When appending a new node during mutations, you can instruct your `GameTree` to automatically merge your new data into an existing node when desired. The merger function has the following signature:
+
+~~~js
+(node: <NodeObject>, data: <Object>) -> <Object> | null
+~~~
+
+where `node` is a merge candidate and `data` the data to be appended. Return `null` if you do not want `data` to be merged into the existing `node`. Return an object (representing the merged data) if you want `node` to get that data instead (and no new nodes are going to be appended).
+
+This property will be inherited during mutations.
 
 #### `tree.root`
 
