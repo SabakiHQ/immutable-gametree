@@ -1,4 +1,3 @@
-const crypto = require('crypto')
 const Draft = require('./Draft')
 
 class GameTree {
@@ -199,19 +198,31 @@ class GameTree {
 
     getStructureHash() {
         if (this._structureHashCache == null) {
-            let hash = crypto.createHash('sha1')
-            let inner = node => {
-                hash.update('[' + JSON.stringify(node.id) + ',')
-                node.children.forEach(inner)
-                hash.update(']')
+            // Simple hash function adapted from
+            // https://github.com/darkskyapp/string-hash
 
-                return hash
+            let hash = (() => {
+                let result = 5381
+
+                return str => {
+                    for (let i = 0; i < str.length; i++) {
+                        result = (result * 33) ^ str.charCodeAt(i)
+                    }
+
+                    return result
+                }
+            })()
+
+            let inner = node => {
+                hash('[' + JSON.stringify(node.id) + ',')
+                node.children.forEach(inner)
+                return hash(']')
             }
 
-            this._structureHashCache = inner(this.root).digest('hex')
+            this._structureHashCache = inner(this.root)
         }
 
-        return this._structureHashCache
+        return (this._structureHashCache >>> 0) + ''
     }
 
     onCurrentLine(id, currents) {
