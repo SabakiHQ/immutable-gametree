@@ -81,7 +81,9 @@ class Draft {
             let node = this.get(mergeWithId)
             node.data = mergedData
 
-            this._idAliases[id] = mergeWithId
+            if (id !== mergeWithId) {
+                this._idAliases[id] = mergeWithId
+            }
         } else {
             let node = {id, data, parentId, children: []}
             parent.children.push(node)
