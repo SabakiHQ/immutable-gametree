@@ -1,7 +1,7 @@
 {
   "name": "@sabaki/immutable-gametree",
   "version": "1.7.1",
-  "description": "An immutable SGF game tree data type.",
+  "description": "An immutable game tree data type.",
   "main": "./src/main.js",
   "scripts": {
     "test": "tap tests/*.test.js"

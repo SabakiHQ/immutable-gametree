@@ -1,6 +1,6 @@
 # @sabaki/immutable-gametree [![Build Status](https://travis-ci.org/SabakiHQ/immutable-gametree.svg?branch=master)](https://travis-ci.org/SabakiHQ/immutable-gametree)
 
-An immutable SGF game tree data type.
+An immutable game tree data type.
 
 ## Installation
 
