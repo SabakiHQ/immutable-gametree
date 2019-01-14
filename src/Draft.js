@@ -40,12 +40,15 @@ class Draft {
     }
 
     _getLevel(id) {
-        if (id === this.root.id) return 0
-
+        let level = -1
         let node = this.get(id)
-        if (node == null) return null
 
-        return this._getLevel(node.parentId) + 1
+        while (node != null) {
+            level++
+            node = this.get(node.parentId)
+        }
+
+        return level
     }
 
     appendNode(parentId, data) {
@@ -91,7 +94,7 @@ class Draft {
             this._nodeCache[id] = node
             this._structureHashCache = null
 
-            if (this._getLevel(parentId) === this._heightCache - 1) {
+            if (this._heightCache != null && this._getLevel(parentId) === this._heightCache - 1) {
                 this._heightCache++
             }
         }
@@ -116,7 +119,7 @@ class Draft {
         this._nodeCache[id] = null
         this._structureHashCache = null
 
-        if (this._getLevel(id) === this._heightCache - 1) {
+        if (this._heightCache != null && this._getLevel(id) === this._heightCache - 1) {
             this._heightCache = null
         }
 
