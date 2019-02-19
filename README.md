@@ -77,7 +77,7 @@ Every value is the id of the distinguished child of the node with its key as id.
 
 `<Function>` - The `getId` function will be called to get an id for each appended node. It should return a primitive value which is unique for each call. Defaults to a simple counter.
 
-This property will be inherited during mutations.
+This property will be inherited across mutations.
 
 #### `tree.merger`
 
@@ -89,7 +89,7 @@ This property will be inherited during mutations.
 
 where `node` is a merge candidate and `data` the data to be appended. Return `null` if you do not want `data` to be merged into the existing `node`. Return an object (representing the merged data) if you want `node` to get that data instead (and no new nodes are going to be appended).
 
-This property will be inherited during mutations.
+This property will be inherited across mutations.
 
 #### `tree.root`
 
