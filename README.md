@@ -208,18 +208,21 @@ See [tree.root](#treeroot).
 
 See [tree.get(id)](#treegetid).
 
-#### `draft.appendNode(parentId, data)`
+#### `draft.appendNode(parentId, data[, options])`
 
 - `parentId` `<Primitive>`
 - `data` `<Object>`
+- `options` `<Object>` *(optional)*
+    - `disableMerging` `<Boolean>` - Default: `false`
 
-Appends a new node with the given `data` to the node with id `parentId`. Returns `null` if operation has failed, otherwise the id of the new node.
+Appends a new node with the given `data` to the node with id `parentId`. Returns `null` if operation has failed, otherwise the id of the new node. If `disableMerging` is set to `true`, automatic merging via [`tree.merger`](#treemerger) will be disabled.
 
-#### `draft.UNSAFE_appendNodeWithId(parentId, id, data)`
+#### `draft.UNSAFE_appendNodeWithId(parentId, id, data[, options])`
 
 - `parentId` `<Primitive>`
 - `id` `<Primitive>`
 - `data` `<Object>`
+- `options` `<Object>` *(optional)* - See [`draft.appendNode`](#draftappendnodeparentid-data)
 
 Appends a new node with the given `id` and `data` to the node with id `parentId`. Returns `false` if operation has failed, otherwise `true`.
 
