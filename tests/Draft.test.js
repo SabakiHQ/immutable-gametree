@@ -19,12 +19,26 @@ t.test('appendNode should merge nodes according to merge function', t => {
     let newId
     let newTree = tree.mutate(draft => {
         newId = draft.appendNode(draft.root.id, {B: ['dd']})
-        draft.UNSAFE_appendNodeWithId(draft.root.id, 'hello', {B: ['dd']})
+        draft.UNSAFE_appendNodeWithId(draft.root.id, 'hello1', {B: ['dd']})
     })
 
     t.equal(newId, id1)
-    t.equal(newTree.get('hello'), newTree.get(id1))
+    t.equal(newTree.get('hello1'), newTree.get(id1))
     t.equal([...newTree.listNodes()].length, [...tree.listNodes()].length)
+
+    t.end()
+})
+
+t.test('appendNode should respect disableMerging option', t => {
+    let newId
+    let newTree = tree.mutate(draft => {
+        newId = draft.appendNode(draft.root.id, {B: ['dd']}, {disableMerging: true})
+        draft.UNSAFE_appendNodeWithId(draft.root.id, 'hello2', {B: ['dd']}, {disableMerging: true})
+    })
+
+    t.notEqual(newId, id1)
+    t.notEqual(newTree.get('hello2'), newTree.get(id1))
+    t.notEqual([...newTree.listNodes()].length, [...tree.listNodes()].length)
 
     t.end()
 })
