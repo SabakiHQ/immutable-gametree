@@ -222,7 +222,7 @@ Appends a new node with the given `data` to the node with id `parentId`. Returns
 - `parentId` `<Primitive>`
 - `id` `<Primitive>`
 - `data` `<Object>`
-- `options` `<Object>` *(optional)* - See [`draft.appendNode`](#draftappendnodeparentid-data)
+- `options` `<Object>` *(optional)* - See [`draft.appendNode`](#draftappendnodeparentid-data-options)
 
 Appends a new node with the given `id` and `data` to the node with id `parentId`. Returns `false` if operation has failed, otherwise `true`.
 
