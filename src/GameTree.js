@@ -9,13 +9,21 @@ class GameTree {
 
         this.merger = merger || (() => null)
 
-        this.root = root || {
-            id: this.getId(),
-            data: {},
-            parentId: null,
-            children: []
+        if (root == null) {
+            root = {
+                id: this.getId(),
+                data: {},
+                parentId: null,
+                children: []
+            }
+        } else {
+            if (root.id == null) root.id = this.getId()
+            if (root.data == null) root.data = {}
+            if (root.parentId == null) root.parentId = null
+            if (root.children == null) root.children = []
         }
 
+        this.root = root
         this._nodeCache = {}
         this._idAliases = {}
         this._heightCache = null
