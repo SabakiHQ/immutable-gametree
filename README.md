@@ -277,3 +277,7 @@ Sets the specified `property` of the node with the given `id` as `values`. Refra
 - `property` `<String>`
 
 Removes the specified `property` from the node. Returns `false` if operation has failed, otherwise `true`.
+
+## Releated
+
+- [crdt-gametree](https://github.com/SabakiHQ/crdt-gametree) - An immutable, conflict-free replicated game tree data type.
