@@ -120,10 +120,7 @@ class Draft {
 
         this._nodeCache[id] = null
         this._structureHashCache = null
-
-        if (this._heightCache != null && this._getLevel(id) === this._heightCache - 1) {
-            this._heightCache = null
-        }
+        this._heightCache = null
 
         return true
     }
