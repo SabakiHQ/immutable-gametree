@@ -22,10 +22,11 @@ class Draft {
             return null
         }
 
-        let nodeCopy = Object.assign({}, node, {
-            data: Object.assign({}, node.data),
+        let nodeCopy = {
+            ...node,
+            data: {...node.data},
             children: [...node.children]
-        })
+        }
 
         if (node.parentId != null) {
             let parentCopy = this.get(node.parentId)
@@ -140,9 +141,11 @@ class Draft {
         let index = parent.children.findIndex(child => child.id === id)
         if (index < 0) return null
 
-        let newIndex = direction === 'left' ? Math.max(index - 1, 0)
-            : direction === 'right' ? Math.min(index + 1, parent.children.length)
-            : 0
+        let newIndex = {
+            left: Math.max(index - 1, 0),
+            right: Math.min(index + 1, parent.children.length),
+            main: 0
+        }[direction]
 
         if (index !== newIndex) {
             let [child] = parent.children.splice(index, 1)
