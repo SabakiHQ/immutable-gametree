@@ -2,25 +2,15 @@ const Draft = require('./Draft')
 
 class GameTree {
     constructor({getId = null, merger = null, root = null} = {}) {
-        this.getId = getId || (() => {
-            let id = 0
-            return () => id++
-        })()
-
+        this.getId = getId || ((id = 0) => () => id++)()
         this.merger = merger || (() => null)
 
-        if (root == null) {
-            root = {
-                id: this.getId(),
-                data: {},
-                parentId: null,
-                children: []
-            }
-        } else {
-            if (root.id == null) root.id = this.getId()
-            if (root.data == null) root.data = {}
-            if (root.parentId == null) root.parentId = null
-            if (root.children == null) root.children = []
+        root = {
+            id: this.getId(),
+            data: {},
+            parentId: null,
+            children: [],
+            ...(root || {})
         }
 
         this.root = root
