@@ -42,12 +42,12 @@ A node is represented by an object of the following form:
 
 ```js
 {
-    id: <Primitive>,
-    data: {
-        [property: <String>]: <Array<Primitive>>
-    },
-    parentId: <Primitive> | null,
-    children: <Array<NodeObject>>
+  id: <Primitive>,
+  data: {
+    [property: <String>]: <Array<Primitive>>
+  },
+  parentId: <Primitive> | null,
+  children: <Array<NodeObject>>
 }
 ```
 
@@ -58,7 +58,7 @@ children of nodes with an object of the following form:
 
 ```js
 {
-    [id: <Primitive>]: <Primitive>
+  [id: <Primitive>]: <Primitive>
 }
 ```
 
@@ -199,6 +199,11 @@ Equivalent to `[...tree.listCurrentNodes(currents)].length`.
 
 Calculates and returns the height of the tree as an integer. This value will be
 cached across mutations when possible.
+
+#### `tree.getHash()`
+
+Calculates and returns a hash of the whole tree as a string. This value will
+be cached.
 
 #### `tree.getStructureHash()`
 

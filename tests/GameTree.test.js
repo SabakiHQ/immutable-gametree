@@ -198,3 +198,21 @@ t.test('getStructureHash method', t => {
 
   t.end()
 })
+
+t.test('getHash method', t => {
+  let hash = tree.getHash()
+
+  let tree2 = tree.mutate(draft => {
+    draft.addToProperty(draft.root.id, 'MA', 'aa')
+    draft.removeProperty(childId1, 'MA')
+  })
+
+  let tree3 = tree2.mutate(draft => {
+    draft.appendNode(draft.root.id, {})
+  })
+
+  t.notEqual(hash, tree2.getStructureHash())
+  t.notEqual(hash, tree3.getStructureHash())
+
+  t.end()
+})

@@ -1,4 +1,5 @@
 const Draft = require('./Draft')
+const hasher = require('./hasher')
 
 class GameTree {
   constructor({getId = null, merger = null, root = null} = {}) {
@@ -17,6 +18,7 @@ class GameTree {
     this._nodeCache = {}
     this._idAliases = {}
     this._heightCache = null
+    this._hashCache = null
     this._structureHashCache = null
   }
 
@@ -214,20 +216,7 @@ class GameTree {
 
   getStructureHash() {
     if (this._structureHashCache == null) {
-      // Simple hash function adapted from
-      // https://github.com/darkskyapp/string-hash
-
-      let hash = (() => {
-        let result = 5381
-
-        return str => {
-          for (let i = 0; i < str.length; i++) {
-            result = (result * 33) ^ str.charCodeAt(i)
-          }
-
-          return result
-        }
-      })()
+      let hash = hasher.new()
 
       let inner = node => {
         hash('[' + JSON.stringify(node.id) + ',')
@@ -239,6 +228,22 @@ class GameTree {
     }
 
     return (this._structureHashCache >>> 0) + ''
+  }
+
+  getHash() {
+    if (this._hashCache == null) {
+      let hash = hasher.new()
+
+      let inner = node => {
+        hash('[' + JSON.stringify(node.data) + ',')
+        node.children.forEach(inner)
+        return hash(']')
+      }
+
+      this._hashCache = inner(this.root)
+    }
+
+    return (this._hashCache >>> 0) + ''
   }
 
   onCurrentLine(id, currents) {
