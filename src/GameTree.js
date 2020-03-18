@@ -196,7 +196,16 @@ class GameTree {
 
   getHeight() {
     if (this._heightCache == null) {
-      let inner = node => 1 + Math.max(...node.children.map(inner), 0)
+      let inner = node => {
+        let max = 0
+
+        for (let child of node.children) {
+          max = Math.max(max, inner(child))
+        }
+
+        return max + 1
+      }
+
       this._heightCache = inner(this.root)
     }
 
