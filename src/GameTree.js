@@ -64,6 +64,12 @@ class GameTree {
 
     while (node.children.length === 1) {
       node = node.children[0]
+
+      this._nodeCache[node.id] = node
+      for (let child of node.children) {
+        this._nodeCache[child.id] = child
+      }
+
       yield node
     }
   }
