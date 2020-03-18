@@ -4,7 +4,9 @@
   "description": "An immutable game tree data type.",
   "main": "./src/main.js",
   "scripts": {
-    "test": "tap tests/*.test.js"
+    "test": "tap tests/*.test.js",
+    "format": "prettier \"**/*.{md,js}\" --write",
+    "format-watch": "onchange \"**/*.{md,js}\" -- prettier {{changed}} --write"
   },
   "repository": {
     "type": "git",
@@ -27,7 +29,15 @@
     "url": "https://github.com/SabakiHQ/gametree/issues"
   },
   "homepage": "https://github.com/SabakiHQ/gametree#readme",
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "proseWrap": "always"
+  },
   "devDependencies": {
+    "onchange": "^6.1.0",
+    "prettier": "1.19.1",
     "tap": "^14.10.6"
   }
 }
