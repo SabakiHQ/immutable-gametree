@@ -62,8 +62,10 @@ class GameTree {
     if (node == null) return
     yield node
 
-    if (node.children.length !== 1) return
-    yield* this.getSequence(node.children[0].id)
+    while (node.children.length === 1) {
+      node = node.children[0]
+      yield node
+    }
   }
 
   mutate(mutator) {
