@@ -191,18 +191,18 @@ class GameTree {
   }
 
   getCurrentHeight(currents) {
-    let inner = node => {
-      if (node == null) return 0
+    let result = 0
+    let node = this.root
 
-      let child =
+    while (node != null) {
+      result++
+      node =
         currents[node.id] == null
           ? node.children[0]
           : node.children.find(child => child.id === currents[node.id])
-
-      return 1 + inner(child)
     }
 
-    return inner(this.root)
+    return result
   }
 
   getHeight() {
