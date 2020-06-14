@@ -169,12 +169,13 @@ class GameTree {
   }
 
   getLevel(id) {
-    if (id === this.root.id) return 0
+    let result = -1
 
-    let node = this.get(id)
-    if (node == null) return null
+    for (let node of this.listNodesVertically(id, -1, {})) {
+      result++
+    }
 
-    return this.getLevel(node.parentId) + 1
+    return result < 0 ? null : result
   }
 
   *getSection(level) {
