@@ -1,6 +1,6 @@
 {
   "name": "@sabaki/immutable-gametree",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "description": "An immutable game tree data type.",
   "main": "./src/main.js",
   "scripts": {
