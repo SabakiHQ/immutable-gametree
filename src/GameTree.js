@@ -256,16 +256,19 @@ class GameTree {
   }
 
   onCurrentLine(id, currents) {
-    let node = this.get(id)
-    let {parentId} = node
+    for (let node of this.listNodesVertically(id, -1, {})) {
+      if (node.id === id) continue
+      let {parentId} = node
 
-    return (
-      parentId == null ||
-      ((node.id === currents[parentId] ||
-        (currents[parentId] == null &&
-          this.get(parentId).children[0] === node)) &&
-        this.onCurrentLine(parentId, currents))
-    )
+      if (
+        parentId != null &&
+        currents[parentId] !== node.id &&
+        (currents[parentId] != null || this.get(parentId).children[0] !== node)
+      )
+        return false
+    }
+
+    return true
   }
 
   onMainLine(id) {
