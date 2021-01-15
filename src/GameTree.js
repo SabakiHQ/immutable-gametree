@@ -257,7 +257,6 @@ class GameTree {
 
   onCurrentLine(id, currents) {
     for (let node of this.listNodesVertically(id, -1, {})) {
-      if (node.id === id) continue
       let {parentId} = node
 
       if (

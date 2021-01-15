@@ -165,6 +165,7 @@ t.test('onCurrentLine method', t => {
   t.equal(tree.onCurrentLine(tree.root.id, {}), true)
   t.equal(tree.onCurrentLine(subChildId1, {[id1]: childId2}), false)
   t.equal(tree.onCurrentLine(subChildId1, {[id1]: childId3}), true)
+  t.equal(tree.onCurrentLine(childId1, {[id1]: childId2}), false)
 
   t.end()
 })
