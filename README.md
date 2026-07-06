@@ -1,4 +1,4 @@
-# @sabaki/immutable-gametree [![Build Status](https://github.com/SabakiHQ/immutable-gametree/workflows/CI/badge.svg?branch=master)](https://github.com/SabakiHQ/immutable-gametree/actions)
+# @sabaki/immutable-gametree [![CI](https://github.com/SabakiHQ/immutable-gametree/actions/workflows/ci.yml/badge.svg)](https://github.com/SabakiHQ/immutable-gametree/actions/workflows/ci.yml)
 
 An immutable game tree data type.
 
