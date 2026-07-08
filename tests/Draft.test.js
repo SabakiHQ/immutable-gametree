@@ -6,11 +6,11 @@ t.test('appendNode operation', t => {
     draft.appendNode(childId2, {B: ['qq']})
   })
 
-  t.notEqual(newTree, tree)
-  t.deepEqual(tree.get(childId2).children, [])
+  t.not(newTree, tree)
+  t.same(tree.get(childId2).children, [])
   t.equal(newTree.get(childId2).children.length, 1)
   t.equal(newTree.get(childId2).children[0].parentId, childId2)
-  t.deepEqual(newTree.get(childId2).children[0].data, {B: ['qq']})
+  t.same(newTree.get(childId2).children[0].data, {B: ['qq']})
 
   t.end()
 })
@@ -41,9 +41,9 @@ t.test('appendNode should respect disableMerging option', t => {
     )
   })
 
-  t.notEqual(newId, id1)
-  t.notEqual(newTree.get('hello2'), newTree.get(id1))
-  t.notEqual([...newTree.listNodes()].length, [...tree.listNodes()].length)
+  t.not(newId, id1)
+  t.not(newTree.get('hello2'), newTree.get(id1))
+  t.not([...newTree.listNodes()].length, [...tree.listNodes()].length)
 
   t.end()
 })
@@ -53,7 +53,7 @@ t.test('removeNode operation', t => {
     draft.removeNode(childId2)
   })
 
-  t.notEqual(newTree, tree)
+  t.not(newTree, tree)
   t.equal(newTree.get(childId2), null)
   t.equal(newTree.get(id1).children[0].id, childId1)
 
@@ -86,8 +86,8 @@ t.test('shiftNode operation', t => {
     draft.shiftNode(childId3, 'left')
   })
 
-  t.notEqual(newTree, tree)
-  t.deepEqual(
+  t.not(newTree, tree)
+  t.same(
     newTree.get(id1).children.map(x => x.id),
     [childId1, childId3, childId2]
   )
@@ -96,7 +96,7 @@ t.test('shiftNode operation', t => {
     draft.shiftNode(childId1, 'right')
   })
 
-  t.deepEqual(
+  t.same(
     newTree.get(id1).children.map(x => x.id),
     [childId3, childId1, childId2]
   )
@@ -105,7 +105,7 @@ t.test('shiftNode operation', t => {
     draft.shiftNode(childId2, 'main')
   })
 
-  t.deepEqual(
+  t.same(
     newTree.get(id1).children.map(x => x.id),
     [childId2, childId3, childId1]
   )
@@ -119,7 +119,7 @@ t.test('shiftNode should not move nodes out of bounds', t => {
     draft.shiftNode(childId3, 'right')
   })
 
-  t.deepEqual(
+  t.same(
     newTree.get(id1).children.map(x => x.id),
     [childId1, childId2, childId3]
   )
@@ -132,9 +132,9 @@ t.test('makeRoot operation', t => {
     draft.makeRoot(id1)
   })
 
-  t.notEqual(newTree, tree)
+  t.not(newTree, tree)
   t.equal(newTree.get(tree.root.id), null)
-  t.deepEqual(newTree.root, {...tree.get(id1), parentId: null})
+  t.same(newTree.root, {...tree.get(id1), parentId: null})
   t.equal(newTree.root.parentId, null)
 
   t.end()
@@ -145,15 +145,15 @@ t.test('addToProperty operation', t => {
     draft.addToProperty(id1, 'C', 'Hello World!')
   })
 
-  t.notEqual(newTree, tree)
-  t.deepEqual(newTree.get(id1).data, {B: ['dd'], C: ['Hello World!']})
+  t.not(newTree, tree)
+  t.same(newTree.get(id1).data, {B: ['dd'], C: ['Hello World!']})
 
   let newTree2 = newTree.mutate(draft => {
     draft.addToProperty(id1, 'C', 'Test 2')
   })
 
-  t.deepEqual(newTree.get(id1).data, {B: ['dd'], C: ['Hello World!']})
-  t.deepEqual(newTree2.get(id1).data, {
+  t.same(newTree.get(id1).data, {B: ['dd'], C: ['Hello World!']})
+  t.same(newTree2.get(id1).data, {
     B: ['dd'],
     C: ['Hello World!', 'Test 2']
   })
@@ -166,19 +166,19 @@ t.test('addToProperty should not add existing values', t => {
     draft.addToProperty(id1, 'B', 'dd')
   })
 
-  t.deepEqual(newTree.get(id1).data, {B: ['dd']})
+  t.same(newTree.get(id1).data, {B: ['dd']})
   t.end()
 })
 
 t.test('removeFromProperty operation', t => {
-  t.deepEqual(tree.get(childId1).data.MA, ['qd', 'qq'])
+  t.same(tree.get(childId1).data.MA, ['qd', 'qq'])
 
   let newTree = tree.mutate(draft => {
     draft.removeFromProperty(childId1, 'MA', 'qq')
   })
 
-  t.deepEqual(tree.get(childId1).data.MA, ['qd', 'qq'])
-  t.deepEqual(newTree.get(childId1).data.MA, ['qd'])
+  t.same(tree.get(childId1).data.MA, ['qd', 'qq'])
+  t.same(newTree.get(childId1).data.MA, ['qd'])
   t.end()
 })
 
@@ -189,7 +189,7 @@ t.test(
       draft.removeFromProperty(childId1, 'W', 'dq')
     })
 
-    t.assertNot('W' in newTree.get(childId1).data)
+    t.notOk('W' in newTree.get(childId1).data)
     t.end()
   }
 )
@@ -199,7 +199,7 @@ t.test('removeFromProperty should ignore values that do not exist', t => {
     draft.removeFromProperty(childId1, 'W', 'dd')
   })
 
-  t.deepEqual(newTree.get(childId1).data.W, ['dq'])
+  t.same(newTree.get(childId1).data.W, ['dq'])
   t.end()
 })
 
@@ -209,8 +209,8 @@ t.test('updateProperty operation', t => {
     draft.updateProperty(childId1, 'MA', values)
   })
 
-  t.notEqual(newTree, tree)
-  t.deepEqual(tree.get(childId1).data.MA, ['qd', 'qq'])
+  t.not(newTree, tree)
+  t.same(tree.get(childId1).data.MA, ['qd', 'qq'])
   t.equal(newTree.get(childId1).data.MA, values)
 
   t.end()
@@ -223,13 +223,13 @@ t.test(
       draft.updateProperty(childId1, 'MA', [])
     })
 
-    t.assertNot('MA' in newTree.get(childId1).data)
+    t.notOk('MA' in newTree.get(childId1).data)
 
     newTree = tree.mutate(draft => {
       draft.updateProperty(childId1, 'MA', null)
     })
 
-    t.assertNot('MA' in newTree.get(childId1).data)
+    t.notOk('MA' in newTree.get(childId1).data)
     t.end()
   }
 )

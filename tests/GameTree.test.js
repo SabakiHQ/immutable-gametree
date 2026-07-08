@@ -5,7 +5,7 @@ t.test('get method', t => {
   let node = tree.get(subChildId1)
   let parent = tree.get(childId3)
 
-  t.deepEqual(node, {
+  t.same(node, {
     id: subChildId1,
     data: {B: ['dq']},
     parentId: childId3,
@@ -18,12 +18,12 @@ t.test('get method', t => {
 
 t.test('getSequence method', t => {
   let sequence1 = [...tree.getSequence(tree.root.id)]
-  t.deepEqual(sequence1, [tree.root, tree.get(id1)])
+  t.same(sequence1, [tree.root, tree.get(id1)])
 
   let sequence2 = [...tree.getSequence(childId3)]
-  t.deepEqual(sequence2, [tree.get(childId3), tree.get(subChildId1)])
+  t.same(sequence2, [tree.get(childId3), tree.get(subChildId1)])
 
-  t.deepEqual([...tree.getSequence(null)], [])
+  t.same([...tree.getSequence(null)], [])
   t.end()
 })
 
@@ -75,51 +75,51 @@ t.test('listNodesHorizontally method', t => {
     tree.get(subChildId1)
   ]
 
-  t.deepEqual([...tree.listNodesHorizontally(tree.root.id, 1)], list)
-  t.deepEqual([...tree.listNodesHorizontally(tree.root.id, -1)], [tree.root])
-  t.deepEqual(
+  t.same([...tree.listNodesHorizontally(tree.root.id, 1)], list)
+  t.same([...tree.listNodesHorizontally(tree.root.id, -1)], [tree.root])
+  t.same(
     [...tree.listNodesHorizontally(childId3, -1)],
     list.slice(0, 5).reverse()
   )
-  t.deepEqual(
+  t.same(
     [...tree.listNodesHorizontally(subChildId1, -1)],
     list.slice().reverse()
   )
-  t.deepEqual([...tree.listNodesHorizontally(null, 1)], [])
+  t.same([...tree.listNodesHorizontally(null, 1)], [])
 
   t.end()
 })
 
 t.test('listNodesVertically method', t => {
-  t.deepEqual(
+  t.same(
     [...tree.listNodesVertically(tree.root.id, 1, {})],
     [tree.root, tree.get(id1), tree.get(childId1)]
   )
-  t.deepEqual([...tree.listNodesVertically(tree.root.id, -1, {})], [tree.root])
-  t.deepEqual(
+  t.same([...tree.listNodesVertically(tree.root.id, -1, {})], [tree.root])
+  t.same(
     [...tree.listNodesVertically(tree.root.id, 1, {[id1]: childId3})],
     [tree.root, tree.get(id1), tree.get(childId3), tree.get(subChildId1)]
   )
-  t.deepEqual(
+  t.same(
     [...tree.listNodesVertically(childId3, -1, {})],
     [tree.get(childId3), tree.get(id1), tree.root]
   )
-  t.deepEqual(
+  t.same(
     [...tree.listNodesVertically(subChildId1, -1)],
     [tree.get(subChildId1), tree.get(childId3), tree.get(id1), tree.root]
   )
-  t.deepEqual([...tree.listNodesVertically(null, 1)], [])
+  t.same([...tree.listNodesVertically(null, 1)], [])
 
   t.end()
 })
 
 t.test('listCurrentNodes method', t => {
-  t.deepEqual(
+  t.same(
     [...tree.listCurrentNodes({})],
     [tree.root, tree.get(id1), tree.get(childId1)]
   )
 
-  t.deepEqual(
+  t.same(
     [...tree.listCurrentNodes({[id1]: childId3})],
     [tree.root, tree.get(id1), tree.get(childId3), tree.get(subChildId1)]
   )
@@ -142,14 +142,14 @@ t.test('getLevel should return null if node is not found', t => {
 })
 
 t.test('getSection method', t => {
-  t.deepEqual([...tree.getSection(-1)], [])
-  t.deepEqual([...tree.getSection(0)], [tree.root])
-  t.deepEqual(
+  t.same([...tree.getSection(-1)], [])
+  t.same([...tree.getSection(0)], [tree.root])
+  t.same(
     [...tree.getSection(2)],
     [tree.get(childId1), tree.get(childId2), tree.get(childId3)]
   )
-  t.deepEqual([...tree.getSection(3)], [tree.get(subChildId1)])
-  t.deepEqual([...tree.getSection(4)], [])
+  t.same([...tree.getSection(3)], [tree.get(subChildId1)])
+  t.same([...tree.getSection(4)], [])
 
   t.end()
 })
@@ -195,7 +195,7 @@ t.test('getStructureHash method', t => {
   })
 
   t.equal(hash, sameStructure.getStructureHash())
-  t.notEqual(hash, differentStructure.getStructureHash())
+  t.not(hash, differentStructure.getStructureHash())
 
   t.end()
 })
@@ -212,8 +212,8 @@ t.test('getHash method', t => {
     draft.appendNode(draft.root.id, {})
   })
 
-  t.notEqual(hash, tree2.getStructureHash())
-  t.notEqual(hash, tree3.getStructureHash())
+  t.not(hash, tree2.getStructureHash())
+  t.not(hash, tree3.getStructureHash())
 
   t.end()
 })
