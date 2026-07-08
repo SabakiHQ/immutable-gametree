@@ -4,7 +4,7 @@
   "description": "An immutable game tree data type.",
   "main": "./src/main.js",
   "scripts": {
-    "test": "tap tests/*.test.js",
+    "test": "tap --allow-incomplete-coverage tests/*.test.js",
     "format": "prettier \"**/*.{md,js}\" --write",
     "format-watch": "onchange \"**/*.{md,js}\" -- prettier {{changed}} --write"
   },
@@ -38,6 +38,6 @@
   "devDependencies": {
     "onchange": "^6.1.0",
     "prettier": "1.19.1",
-    "tap": "^14.10.6"
+    "tap": "^21.7.4"
   }
 }
