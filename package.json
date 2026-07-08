@@ -36,8 +36,8 @@
     "proseWrap": "always"
   },
   "devDependencies": {
-    "onchange": "^6.1.0",
-    "prettier": "1.19.1",
+    "onchange": "^7.1.0",
+    "prettier": "3.9.4",
     "tap": "^21.7.4"
   }
 }
